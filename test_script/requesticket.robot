@@ -145,12 +145,21 @@ Create new request ticket
     # Capture logical
     BuiltIn.Sleep    3s
     SeleniumLibrary.Capture Page Screenshot    RequestTicket_${TEST NAME}_${ingredient}_Origin${origin}_Destination${destination}_.png
+    # ----- Case Basis -----
+    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1000
+    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptCBOT}    10000
+    # Select Proteitn (Force as Flat)
+    Run Keyword If    '${contractType}' == 'Basis'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Flat']//ancestor::div[@role='option']
+    # ----- End Basis -----
+
+    # ----- Case Flat -----
     # Input Flat
-    SeleniumLibrary.Input Text    ${inptFlat}    1000
+    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1000
     # Input Factory
-    SeleniumLibrary.Input Text    ${inptTrasportFee}    25
-    # Select Proteitn (Force as Total)
-    Select value from    ${ddlCalProtein}    ${liTotal}  
+    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptTrasportFee}    25
+    # Select Proteitn (Force as Flat)
+    Run Keyword If    '${contractType}' == 'Flat'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Total']//ancestor::div[@role='option']
+ 
     # Save supplier
     SeleniumLibrary.Click Element    ${btnSave}
 

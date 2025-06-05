@@ -24,6 +24,8 @@ ${dateShippingStart}    xpath: //app-date-picker[@id='startDate']
 ${dateShippingEnd}    xpath: //app-date-picker[@placeholder='วันที่สิ้นสุด']
 ${inptFlat}    xpath: //input[@id='flatUsd']
 ${inptTrasportFee}    xpath: //input[@id='transportToFactory']
+${inptBasis}    xpath: //input[@id='basic']
+${inptCBOT}    xpath: //input[@id='cbot']
 ${ddlCalProtein}    xpath: //label[contains(text(),'คำนวณราคาต่อโปรตีน 48% ')]/following-sibling::ng-select
 ${btnSave}    xpath:  //button[text()=' บันทึก ']
 

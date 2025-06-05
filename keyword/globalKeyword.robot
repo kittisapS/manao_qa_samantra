@@ -3,7 +3,6 @@ Library    SeleniumLibrary
 Resource    ../variables/globalVariable.robot
 
 *** Keywords ***
-
 Open Samantra and login
     [Arguments]    ${url}    ${browser}
     SeleniumLibrary.Open Browser    ${url}   ${browser}
