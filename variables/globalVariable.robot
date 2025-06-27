@@ -11,8 +11,8 @@ ${btnLogin}    xpath: //input[@id='kc-login']
 ${h2Welcome}    xpath: //h2[contains(text(),'Welcome to FIT Samantra.')]
 ${loading}    xpath:  //div[@class='cdk-overlay-container']
 ## Parameters
-${txtUsername}    Manao_Peepo
-${txtPassword}    Manao100%
+${txtUsername}    manao_trader
+${txtPassword}    123456
 ## ----- End Login -----
 
 ## ----- Main Menu -----

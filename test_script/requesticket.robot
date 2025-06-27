@@ -1,5 +1,5 @@
 *** Settings ***
-Library    SeleniumLibrary
+Library    String
 Resource    ../keyword/globalKeyword.robot
 Resource    ../variables/variableRequestTicket.robot
 Suite Setup    Open Samantra and login    ${urlSTG}    ${chrome}
@@ -13,6 +13,7 @@ ${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Monday,
 ${liTotal}    xpath: //span[text()='Total']//ancestor::div[@role='option']
 ${inptTopic}    xpath: //input[@name='topic']
 ${inptAdditionalDetail}    xpath: //textarea[@id='additionalInfo']
+${btnConfirm}    xpath: //button[text()='ยืนยัน']
 
 *** Test Cases ***        Ingrediant        Contract Type       Destination        Origin         SeaFreight
 Case_Flat_1               SBM               Flat                Thailand        BRA               Conventional Vessel
@@ -73,7 +74,7 @@ Case_Flat_2               SBM               Flat                Thailand        
 # Case_Flat_57              SFMP              Flat                Malaysia       ARG             Container
 # Case_Flat_58              SFMP              Flat                Thailand       UKR             Container
 # Case_Flat_59              SFMP              Flat                Malaysia       UKR             Container
-# Case_Basis_1              SBM               Basis               Thailand        BRA            Conventional Vessel
+Case_Basis_1              SBM               Basis               Thailand        BRA            Conventional Vessel
 # Case_Basis_2              SBM               Basis               Thailand        IND            Container
 # Case_Basis_3              SBM               Basis               Cambodia        IND            Container
 # Case_Basis_4              SB                Basis               Viet Nam        USA               Container
@@ -89,6 +90,15 @@ Case_Flat_2               SBM               Flat                Thailand        
 # Case_Basis_14             SFMP              Basis               Malaysia        UKR             Container
 
 *** Keywords ***
+Get request no
+    Wait Until Element Is Not Visible    ${loading}
+    Wait Until Element Is Visible    ${hRequestNo}
+    ${rawText}=    Get Text    ${hRequestNo}
+    ${trimmedText}=    Strip String    ${rawText}
+    ${requestNo}=    Replace String    ${trimmedText}    เลขที่คำขอจัดซื้อ :    ${EMPTY}
+    Log To Console    OrderNo: ${requestNo}
+    RETURN    ${requestNo}
+
 Create new request ticket
     [Arguments]    ${ingredient}    ${contractType}    ${destination}    ${origin}    ${seaFreight}
     # Create new request
@@ -169,6 +179,11 @@ Create new request ticket
     # Input additional info
     Set Focus To Element    ${inptAdditionalDetail}
     Input Text    ${inptAdditionalDetail}   Test001
-    Set Focus To Element    ${btnSaveDraft}
-    Click Element    ${btnSaveDraft}
+    Set Focus To Element    ${btnSubmitRequest}
+    Click Element    ${btnSubmitRequest}
+    Wait Until Element Is Visible    ${btnConfirm}    30s
+    Click Element    ${btnConfirm}
     Wait Until Element Is Not Visible   ${loading}    30s
+
+    # Set Request no to variable
+    ${requestNo}=    Get request no

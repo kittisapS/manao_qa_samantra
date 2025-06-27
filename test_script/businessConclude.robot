@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 Resource    ../keyword/globalKeyword.robot
 Resource    ../variables/variableBusinessConclude.robot
-Suite Setup    Open Samantra and login    ${urlSTG}    ${chrome}
+Suite Setup    Open Samantra and login    ${urlDev}    ${chrome}
 Suite Teardown    Close All Browsers
 Test Template    Create new business conclude
 
@@ -15,13 +15,13 @@ ${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Monday,
 
 # ----- Data in list -----
 ${dataCustomerAddress}    xpath: //ng-select[@placeholder='Input Buyer Address']//div[@role='option'][1]
-${dataSupplier}    xpath: //ng-select[@placeholder='Input Seller Name']//div[@role='option'][1]
-${dataSupplierAddress}    xpath: //ng-select[@placeholder='Input Seller Address']//div[@role='option'][1]
+${dataSupplier}    xpath: //ng-select[@placeholder='Input Seller Name']//div[@role='option']//span[text()='THANH KHOI']
+${dataSupplierAddress}    xpath: //ng-select[@placeholder='Input Seller Address']//div[@role='option']
 ${dataOriginPort}    xpath: //label[text()='Origin Port ']//div[@role='option'][1]
 ${dataDestinationPort}    xpath: //label[text()='Destination Port ']//div[@role='option'][1]
 
 *** Test Cases ***            Contract Type        Product                                              Customer                             Destination     Origin         SeaFreight
-businessConclude_Flat         Flat                 U.S. SOLVENT EXTRACTED TOASTED SOYBEAN MEAL - USA    C.P. TRADING COMPANY LIMITED         Thailand        Brazil         Conventional Vessel
+businessConclude_Flat         Flat                 U.S. SOLVENT EXTRACTED TOASTED SOYBEAN MEAL - USA    C.P. TRADING COMPANY LIMITED         Thailand        Brazil         Truck
 businessConclude_Basis         Basis               U.S. SOLVENT EXTRACTED TOASTED SOYBEAN MEAL - USA    C.P. TRADING COMPANY LIMITED         Thailand        Brazil         Conventional Vessel
 
 *** Keywords ***
@@ -53,9 +53,10 @@ Create new business conclude
         ## ----- End -----
 
         ## ----- For Basis -----
-        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptBasis}    700
-        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptCBOT}    800
-        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptCNF}    900
+        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptBasis}    125
+        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptCBOT}    700
+        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptCNF}    825
+        Run Keyword If    '${contractType}' == 'Basis'    Input Text    ${inptCNFPrice}    940.5
         ## ----- End -----
     # Input QTY and Tolerance
     Input Text    ${inptQTY}    50

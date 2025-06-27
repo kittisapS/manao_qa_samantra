@@ -30,3 +30,7 @@ ${ddlCalProtein}    xpath: //label[contains(text(),'คำนวณราคา�
 ${btnSave}    xpath:  //button[text()=' บันทึก ']
 
 ${btnSaveDraft}    xpath: //button[text()=' บันทึกร่าง ']
+${btnSubmitRequest}    xpath: //button[text()=' ส่งคำขออนุมัติ ']
+
+# ----- After saving -----
+${hRequestNo}    xpath: //h4[contains(text(),'เลขที่คำขอจัดซื้อ')]
