@@ -3,8 +3,10 @@
 ${btnCreateNewRequest}    xpath: //button[contains(text(),'สร้างคำขอใหม่')]
 ${h2NewRequestTicket}    xpath: //h2[contains(text(),'สร้างคำขอจัดซื้อ')]
 # ----- 1st Criteria -----
+${ddlRequestType}    xpath: //ng-select[@id='select-request-type']
+${liTotal}    xpath: //div/span[text()='รวมปริมาณ']
+${ddlContractType}    xpath: //label[contains(text(),'ประเภทการซื้อ')]/following-sibling::ng-select
 ${ddlIngredient}    xpath: //label[contains(text(),'วัตถุดิบ')]/following-sibling::ng-select
-${ddlContractType}    xpath: //label[contains(text(),'ประเภท')]/following-sibling::ng-select
 ${ddlDestination}    xpath: //label[contains(text(),'ปลายทาง')]/following-sibling::ng-select
 ${dateDuedate}    xpath: //label[contains(text(),'วันที่ครบกำหนด')]/following-sibling::app-date-picker//input[@placeholder='วว/ดด/ปป']
 ${date25}    xpath:  //ngb-datepicker-month//div[text()=' 25 ']
@@ -12,19 +14,28 @@ ${btnCreateRequest}    xpath: //button[contains(text(),'สร้างราย
 
 # ----- 2nd Criteria (supplier) -----
 ${btnAddSupplier}    xpath: //button[text()='เพิ่มรายชื่อคู่ค้า ']
-${txtSupplierFlat}    xpath:  //span[contains(text(),'เพิ่มรายการเสนอราคาคู่ค้า')]
+${txtSupplierFlat}    xpath: //span[contains(text(),'เพิ่มรายการเสนอราคาคู่ค้า')]
 ${ddlSupplier}    xpath: //label[contains(text(),'ชื่อคู่ค้า')]/following-sibling::ng-select
-${li1st}    xpath:    //ng-dropdown-panel//div[1]/span
+${li1st}    xpath: //ng-dropdown-panel//div[1]/span
 ${inptSpec}    xpath: //input[@id='spec']
-${inptQTY}    xpath: //input[@id='quantity']
-${ddlDeparture}    xpath: //ng-select[@placeholder='เลือกประเทศต้นทาง']//input
+${inptMaxCapacity}    xpath: //label[text()='Max Capacity ']//following-sibling::app-unit-input//input
+${ddlOrigin}    xpath: //ng-select[@placeholder='เลือกประเทศต้นทาง']//input
+${ddlProductOrigin}    xpath: //ng-select[@id='select-product-origin']
 ${ddlEndpoint}    xpath: //label[text()='ปลายทาง ']/following-sibling::ng-select[@id='select-destination']
 ${ddlSeaFrieght}    xpath: //label[contains(text(),'รูปเเบบการจัดส่ง')]/following-sibling::ng-select
+${ddlPackage}    xpath: //ng-select[@id='select-master-package']
 ${dateShippingStart}    xpath: //app-date-picker[@id='startDate']
 ${dateShippingEnd}    xpath: //app-date-picker[@placeholder='วันที่สิ้นสุด']
+${ddlContract}    xpath: //ng-select[@id='select-cbot-contract']
 ${inptFlat}    xpath: //input[@id='flatUsd']
 ${inptTrasportFee}    xpath: //input[@id='transportToFactory']
+${inptBasis}    xpath: //input[@id='basic']
+${inptCBOT}    xpath: //input[@id='cbot']
 ${ddlCalProtein}    xpath: //label[contains(text(),'คำนวณราคาต่อโปรตีน 48% ')]/following-sibling::ng-select
-${btnSave}    xpath:  //button[text()=' บันทึก ']
+${btnSave}    xpath: //button[text()=' บันทึก ']
 
 ${btnSaveDraft}    xpath: //button[text()=' บันทึกร่าง ']
+${btnSubmitRequest}    xpath: //button[text()=' ส่งคำขออนุมัติ ']
+
+# ----- After saving -----
+${hRequestNo}    xpath: //h4[contains(text(),'เลขที่คำขอจัดซื้อ')]

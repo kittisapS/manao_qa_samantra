@@ -3,7 +3,6 @@ Library    SeleniumLibrary
 Resource    ../variables/globalVariable.robot
 
 *** Keywords ***
-
 Open Samantra and login
     [Arguments]    ${url}    ${browser}
     SeleniumLibrary.Open Browser    ${url}   ${browser}
@@ -15,6 +14,8 @@ Open Samantra and login
     SeleniumLibrary.Wait Until Element Is Visible    ${h2Welcome}
  
 Go to Request Ticket menu
+    [Arguments]    ${url}    ${browser}
+    Open Samantra and login    ${url}    ${browser}
     SeleniumLibrary.Click Element    ${menuInterTrade}
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuRequestTicket}    30s
     SeleniumLibrary.Click Element    ${subMenuRequestTicket}

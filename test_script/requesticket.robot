@@ -1,18 +1,18 @@
 *** Settings ***
-Library    SeleniumLibrary
+Library    String
+Library    OperatingSystem
 Resource    ../keyword/globalKeyword.robot
 Resource    ../variables/variableRequestTicket.robot
-Suite Setup    Open Samantra and login    ${urlSTG}    ${chrome}
-Test Setup    Go to Request Ticket menu
+Suite Setup    Go to Request Ticket menu        ${urlDev}    ${chrome}
 Suite Teardown    Close All Browsers
 Test Template    Create new request ticket
 
 *** Variables ***
-${dataShippingStart}     xpath: //ngb-datepicker-month//div[@aria-label='Sunday, June 1, 2025']/div[text()=' 1 ']
-${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Monday, June 30, 2025']/div[text()=' 30 ']
-${liTotal}    xpath: //span[text()='Total']//ancestor::div[@role='option']
+${dataShippingStart}     xpath: //ngb-datepicker-month//div[@aria-label='Tuesday, July 1, 2025']/div[text()=' 1 ']
+${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Thursday, July 31, 2025']/div[text()=' 31 ']
 ${inptTopic}    xpath: //input[@name='topic']
-${inptAdditionalDetail}    xpath: //textarea[@id='additionalInfo']
+${inptAdditionalDetail}    xpath: //h4[contains(text(),'เสนอ')]//ancestor::div/form//textarea[@id='additionalInfo']
+${btnConfirm}    xpath: //button[text()='ยืนยัน']
 
 *** Test Cases ***        Ingrediant        Contract Type       Destination        Origin         SeaFreight
 Case_Flat_1               SBM               Flat                Thailand        BRA               Conventional Vessel
@@ -73,7 +73,7 @@ Case_Flat_2               SBM               Flat                Thailand        
 # Case_Flat_57              SFMP              Flat                Malaysia       ARG             Container
 # Case_Flat_58              SFMP              Flat                Thailand       UKR             Container
 # Case_Flat_59              SFMP              Flat                Malaysia       UKR             Container
-# Case_Basis_1              SBM               Basis               Thailand        BRA            Conventional Vessel
+Case_Basis_1              SBM               Basis               Thailand        BRA            Conventional Vessel
 # Case_Basis_2              SBM               Basis               Thailand        IND            Container
 # Case_Basis_3              SBM               Basis               Cambodia        IND            Container
 # Case_Basis_4              SB                Basis               Viet Nam        USA               Container
@@ -89,6 +89,17 @@ Case_Flat_2               SBM               Flat                Thailand        
 # Case_Basis_14             SFMP              Basis               Malaysia        UKR             Container
 
 *** Keywords ***
+Get request no
+    Wait Until Element Is Not Visible    ${loading}
+    Wait Until Element Is Visible    ${hRequestNo}
+    ${rawText}=    Get Text    ${hRequestNo}
+    ${trimmedText}=    Strip String    ${rawText}
+    ${requestNo}=    Replace String    ${trimmedText}    เลขที่คำขอจัดซื้อ :    ${EMPTY}
+    # Add to File
+    Append To File    output.txt    ${requestNo},\n
+    Log To Console    Request No: ${requestNo}
+    RETURN    ${requestNo}
+
 Create new request ticket
     [Arguments]    ${ingredient}    ${contractType}    ${destination}    ${origin}    ${seaFreight}
     # Create new request
@@ -97,12 +108,17 @@ Create new request ticket
     Wait Until Element Is Not Visible    ${txtSuccess}     
     Run Keyword And Ignore Error    SeleniumLibrary.Click Element    ${btnCreateNewRequest}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2NewRequestTicket}
+    # Select Request  type
+    Wait Until Element Is Visible    ${ddlRequestType}
+    Click Element    ${ddlRequestType}
+    Wait Until Element Is Visible    ${liTotal}
+    Click Element    ${liTotal}
+    # Select Contract Type
+    ${dataContractType}    Set Variable    xpath: //div[@role='option']/span[contains(text(),'${contractType}')]
+    Select value from    ${ddlContractType}    ${dataContractType}
     # Select item
     ${dataIngredient}    Set Variable   xpath: //div[@role='option']/span[text()='${ingredient}']
     Select value from    ${ddlIngredient}    ${dataIngredient}
-    # Select Type
-    ${dataContractType}    Set Variable    xpath: //div[@role='option']/span[contains(text(),'${contractType}')]
-    Select value from    ${ddlContractType}    ${dataContractType}
     # Select Destination
     IF    '${destination}' == 'Lao People Democratic Republic'
         ${dataDestination}    Set Variable   xpath: //div[@role='option' and contains(text(),'Lao People')]
@@ -113,9 +129,13 @@ Create new request ticket
     # Select Due date
     Select value from    ${dateDuedate}    ${date25}
     SeleniumLibrary.Click Element    ${dateDuedate}
-    # Create requesst
+    # Create request
     SeleniumLibrary.Click Element    ${btnCreateRequest}
     Wait Until Element Is Not Visible   ${loading}
+
+    #Get Request No.
+    ${requestNo}=    Get request no
+
     # Click add new supplier
     SeleniumLibrary.Click Element    ${btnAddSupplier}
     SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
@@ -125,32 +145,63 @@ Create new request ticket
     SeleniumLibrary.Click Element    ${li1st}
     # Input Spec.
     SeleniumLibrary.Input Text    ${inptSpec}    1000
-    # Input QTY
-    SeleniumLibrary.Input Text    ${inptQTY}    1000
+    # Input MaxCapacity
+    SeleniumLibrary.Input Text    ${inptMaxCapacity}    1000
     # Select Origin
     ${dataOrigin}    Set Variable      xpath: //span[text()='${origin}']//ancestor::div[@role='option']
-    Select value from    ${ddlDeparture}    ${dataOrigin}
+    Select value from    ${ddlOrigin}    ${dataOrigin}
+    # Select Product Origin
+    ${dataProductOrigin}    Set Variable    xpath: //div[@role='option'][1]
+    Select value from    ${ddlProductOrigin}    ${dataProductOrigin}
     # Select Port
     ${dataPort}    Set Variable       xpath: //div[@role='option' and text()=' ANY ']
     Select value from    ${ddlEndpoint}    ${dataPort}
     # Select Sea Frienght
     ${dataSeaFreight}    Set Variable        xpath: //span[text()='${seaFreight}']//ancestor::div[@role='option']
     Select value from    ${ddlSeaFrieght}    ${dataSeaFreight}
-    # Shipping start (Fixed as 1 June 2025)
+    # Select Package
+    ${dataPackage}    Set Variable    xpath: //div[@role='option'][1]
+    Select value from    ${ddlPackage}    ${dataPackage}
+    # Shipping start (Fixed as 1 July 2025)
     SeleniumLibrary.Click Element    ${dateShippingStart}
     SeleniumLibrary.Click Element    ${dataShippingStart}
-    # Shipping End (Fixed as 30 June 2025)
+    # Shipping End (Fixed as 31 July 2025)
     SeleniumLibrary.Click Element    ${dateShippingEnd}
     SeleniumLibrary.Click Element    ${dataShippingEnd}
-    # Capture logical
-    BuiltIn.Sleep    3s
-    SeleniumLibrary.Capture Page Screenshot    RequestTicket_${TEST NAME}_${ingredient}_Origin${origin}_Destination${destination}_.png
+    # # Capture logical
+    # BuiltIn.Sleep    3s
+    # SeleniumLibrary.Capture Page Screenshot    RequestTicket_${TEST NAME}_${ingredient}_Origin${origin}_Destination${destination}_.png
+    # ----- Case Basis -----
+    # Select Contract
+    ${dataContract}    Set Variable    xpath: //div[@role='option'][1]
+    Run Keyword If    '${contractType}' == 'Basis'    Select value from    ${ddlContract}    ${dataContract}
+    # Input Price
+    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1000
+    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptCBOT}    10000
+    # Select Proteitn (Force as Basis + CBOT)
+    Run Keyword If    '${contractType}' == 'Basis'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Basis + CBOT']//ancestor::div[@role='option']
+    # ----- End Basis -----
+
+    # ----- Case Flat -----
     # Input Flat
-    SeleniumLibrary.Input Text    ${inptFlat}    1000
+    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1000
     # Input Factory
-    SeleniumLibrary.Input Text    ${inptTrasportFee}    25
-    # Select Proteitn (Force as Total)
-    Select value from    ${ddlCalProtein}    ${liTotal}  
+    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptTrasportFee}    25
+    # Select Proteitn (Force as Flat)
+    Run Keyword If    '${contractType}' == 'Flat'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Total']//ancestor::div[@role='option']
+ 
+    # Save supplier
+    SeleniumLibrary.Click Element    ${btnSave}
+
+    # ----- Create 2nd supplier -----
+    # Click add new supplier
+    SeleniumLibrary.Click Element    ${btnAddSupplier}
+    SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
+    # Click supplier
+    SeleniumLibrary.Click Element    ${ddlSupplier}
+    ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[2]/span
+    SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
+    SeleniumLibrary.Click Element    ${dataSupplier}
     # Save supplier
     SeleniumLibrary.Click Element    ${btnSave}
 
@@ -160,6 +211,10 @@ Create new request ticket
     # Input additional info
     Set Focus To Element    ${inptAdditionalDetail}
     Input Text    ${inptAdditionalDetail}   Test001
-    Set Focus To Element    ${btnSaveDraft}
-    Click Element    ${btnSaveDraft}
+    Set Focus To Element    ${btnSubmitRequest}
+    Wait Until Element Is Visible    ${btnSubmitRequest}   30s
+    Click Element    ${btnSubmitRequest}
+    Wait Until Element Is Visible    ${btnConfirm}    30s
+    Click Element    ${btnConfirm}
     Wait Until Element Is Not Visible   ${loading}    30s
+    Wait Until Element Is Not Visible    ${txtSuccess}    30s
