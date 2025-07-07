@@ -26,4 +26,4 @@ ${subMenuBusinessConclude}    xpath: //li/a[contains(text(),'Business Conclude')
 ${h4BusinessConclude}    xpath: //h4[contains(text(),'Business Conclude Page')]
 
 ## ----- Toast message -----
-${txtSuccess}    xpath: //h4[text()='บันทึกเรียบร้อย'] 
+${txtSuccess}    xpath: //h4[text()='บันทึกเรียบร้อย']  
