@@ -138,5 +138,5 @@ Create new request ticket
     Click Element    ${btnConfirm}
     Wait Until Element Is Not Visible   ${loading}    30s
     Wait Until Element Is Not Visible    ${txtSuccess}    30s
-
+    Sleep    3s
     RETURN    ${requestID}
