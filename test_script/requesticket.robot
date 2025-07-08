@@ -3,16 +3,12 @@ Library    String
 Library    OperatingSystem
 Resource    ../keyword/globalKeyword.robot
 Resource    ../variables/variableRequestTicket.robot
-Suite Setup    Go to Request Ticket menu        ${urlDev}    ${chrome}
+Suite Setup    Open Samantra and login    ${urlDev}    ${chrome}    ${EMPTY}    ${EMPTY}
 Suite Teardown    Close All Browsers
 Test Template    Create new request ticket
 
 *** Variables ***
-${dataShippingStart}     xpath: //ngb-datepicker-month//div[@aria-label='Tuesday, July 1, 2025']/div[text()=' 1 ']
-${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Thursday, July 31, 2025']/div[text()=' 31 ']
-${inptTopic}    xpath: //input[@name='topic']
-${inptAdditionalDetail}    xpath: //h4[contains(text(),'เสนอ')]//ancestor::div/form//textarea[@id='additionalInfo']
-${btnConfirm}    xpath: //button[text()='ยืนยัน']
+
 
 *** Test Cases ***        Ingrediant        Contract Type       Destination        Origin         SeaFreight
 Case_Flat_1               SBM               Flat                Thailand        BRA               Conventional Vessel
@@ -95,13 +91,17 @@ Get request no
     ${rawText}=    Get Text    ${hRequestNo}
     ${trimmedText}=    Strip String    ${rawText}
     ${requestNo}=    Replace String    ${trimmedText}    เลขที่คำขอจัดซื้อ :    ${EMPTY}
+    ${url}=    Get Location
+    ${trimmedURL}=    Strip String    ${url}
+    ${requestID}=    Replace String    ${trimmedURL}    https://samantra-dev.fitcp.com/globaltrade/request-ticket/proposaledit/    ${EMPTY}
     # Add to File
-    Append To File    output.txt    ${requestNo},\n
-    Log To Console    Request No: ${requestNo}
+    Append To File    output.txt    ${requestID},\n
+    Log To Console    Request No: ${requestNo}, ID: ${requestID}
     RETURN    ${requestNo}
 
 Create new request ticket
     [Arguments]    ${ingredient}    ${contractType}    ${destination}    ${origin}    ${seaFreight}
+    Go to Request Ticket menu
     # Create new request
     SeleniumLibrary.Wait Until Element Is Visible    ${btnCreateNewRequest}
     Wait Until Element Is Not Visible   ${loading}

@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 Resource    ../keyword/globalKeyword.robot
 Resource    ../variables/variableBusinessConclude.robot
-Suite Setup    Open Samantra and login    ${urlDev}    ${chrome}
+Suite Setup    Open Samantra and login    ${urlDev}    ${chrome}    ${EMPTY}    ${EMPTY}
 Suite Teardown    Close All Browsers
 Test Template    Create new business conclude
 
