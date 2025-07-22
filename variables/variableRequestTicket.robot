@@ -5,12 +5,18 @@ ${h2NewRequestTicket}    xpath: //h2[contains(text(),'สร้างคำข�
 # ----- 1st Criteria -----
 ${ddlRequestType}    xpath: //ng-select[@id='select-request-type']
 ${liTotal}    xpath: //div/span[text()='รวมปริมาณ']
+${liAny}    xpath: //div/span[text()='รายเจ้า']
 ${ddlContractType}    xpath: //label[contains(text(),'ประเภทการซื้อ')]/following-sibling::ng-select
 ${ddlIngredient}    xpath: //label[contains(text(),'วัตถุดิบ')]/following-sibling::ng-select
 ${ddlDestination}    xpath: //label[contains(text(),'ปลายทาง')]/following-sibling::ng-select
 ${dateDuedate}    xpath: //label[contains(text(),'วันที่ครบกำหนด')]/following-sibling::app-date-picker//input[@placeholder='วว/ดด/ปป']
 ${date25}    xpath:  //ngb-datepicker-month//div[text()=' 25 ']
 ${btnCreateRequest}    xpath: //button[contains(text(),'สร้างรายการ')]
+${ddlFlatCurrency}    xpath: //ng-select[@id='currencyTypeUsage']
+${liUSD}    xpath: //ng-dropdown-panel//div/span[text()='USD']
+${liLocalCurrency}    xpath: //ng-dropdown-panel//div/span[text()='Local Currency']
+${ddlLocalCurrency}    xpath: //ng-select[@id='localCurrency']
+${inptExchanageRate}    xpath: //input[@id='exchangeRate']
 
 # ----- 2nd Criteria (supplier) -----
 ${btnAddSupplier}    xpath: //button[text()='เพิ่มรายชื่อคู่ค้า ']
@@ -18,6 +24,7 @@ ${txtSupplierFlat}    xpath: //span[contains(text(),'เพิ่มรายก
 ${ddlSupplier}    xpath: //label[contains(text(),'ชื่อคู่ค้า')]/following-sibling::ng-select
 ${li1st}    xpath: //ng-dropdown-panel//div[1]/span
 ${inptSpec}    xpath: //input[@id='spec']
+${inptQuantity}    xpath: //input[@id='quantity']
 ${inptMaxCapacity}    xpath: //label[text()='Max Capacity ']//following-sibling::app-unit-input//input
 ${ddlOrigin}    xpath: //ng-select[@placeholder='เลือกประเทศต้นทาง']//input
 ${ddlProductOrigin}    xpath: //ng-select[@id='select-product-origin']

@@ -35,7 +35,10 @@ Go to tickets and submit comment
     Wait Until Element Is Visible    ${inptAdjustPrice}
     Set Focus To Element    ${inptAdjustPrice}
     Press Keys    ${inptAdjustPrice}    ${CTRLA}    ${newPrice}
+    # Clik element to enable the save button
+    Click Element    ${inptPurchaseTarget}
     Element Should Be Enabled    ${btnSave}
+    # Click Save button to confirm change
     Click Element    ${btnSave}
     Wait Until Element Is Not Visible    ${txtSuccess}    30s
 
@@ -61,7 +64,7 @@ Create Request Ticket and approve tickets
     # Go to Create request
      Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    SBM    Basis    Thailand    BRA    Conventional Vessel
+    ${requestID}=     Create new request ticket    DEV    SBM    Total    Flat    Thailand    BRA    Conventional Vessel
     #${requestID}=    Set Variable    2777
 
     #Sleep    5s
@@ -97,7 +100,7 @@ Create Request Ticket and approve tickets
     Log To Console    Price list: @{priceList}
     FOR    ${price}    IN    @{priceList}
         ${approver}=    Evaluate    ${index} + 1
-        Log To Console    Current Approver: ${approver}
+        #Log To Console    Current Approver: ${approver}
         IF    '${price}' != '${EMPTY}'
             # Re-login
             Logout and then login    ${liUsername}[${index}]    ${passApprover}
@@ -110,5 +113,6 @@ Create Request Ticket and approve tickets
 
 
 *** Test Cases ***             Price 1        Price 2         Price 3         Price 4         Price 5        Price 6
-Case 1                         285             ${EMPTY}             281             281             280            ${EMPTY}
+Case 1                         285            ${EMPTY}             281             281             280       ${EMPTY}
 Case 4                         250            240            240               210            210            210
+Data preparation               ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}

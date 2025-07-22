@@ -2,16 +2,16 @@
 Library    SeleniumLibrary
 Resource    ../keyword/globalKeyword.robot
 Resource    ../variables/variableBusinessConclude.robot
-Suite Setup    Open Samantra and login    ${urlDev}    ${chrome}    ${EMPTY}    ${EMPTY}
+Suite Setup    Open Samantra and login    ${urlSTG}    ${chrome}    ${EMPTY}    ${EMPTY}
 Suite Teardown    Close All Browsers
 Test Template    Create new business conclude
 
 *** Variables ***
 
 # ----- Date -----
-${dataConcludeDate}     xpath: //ngb-datepicker-month//div[@aria-label='Saturday, May 31, 2025']/div[text()=' 31 ']
-${dataShippingStart}     xpath: //ngb-datepicker-month//div[@aria-label='Sunday, June 1, 2025']/div[text()=' 1 ']
-${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Monday, June 30, 2025']/div[text()=' 30 ']
+${dataConcludeDate}     xpath: //ngb-datepicker-month//div[@aria-label='Monday, June 30, 2025']/div[text()=' 30 ']
+${dataShippingStart}     xpath: //ngb-datepicker-month//div[@aria-label='Tuesday, July 1, 2025']/div[text()=' 1 ']
+${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Thursday, July 31, 2025']/div[text()=' 31 ']
 
 # ----- Data in list -----
 ${dataCustomerAddress}    xpath: //ng-select[@placeholder='Input Buyer Address']//div[@role='option'][1]
