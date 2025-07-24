@@ -7,6 +7,7 @@ ${btnAdjustData}    xpath: //button[contains(text(),'ปรับข้อมู
 
 # Modal Adjust data
 ${h4AdjustData}    xpath: //h4[contains(text(),'แก้ไขรายการเสนอแบบรวมปริมาณ')]
+${inptPurchaseTarget}    xpath: //input[@formcontrolname='targetQuantity']
 ${inptAdjustPrice}    xpath: //input[@title='Number Input']
 ${btnSave}    xpath: //button[contains(text(),'บันทึก')]
 
