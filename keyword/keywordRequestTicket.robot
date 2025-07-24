@@ -56,7 +56,8 @@ Create new request ticket
     END
     Select value from    ${ddlDestination}    ${dataDestination}
     # Select Due date
-    Select value from    ${dateDuedate}    ${date25}
+    ${dataDate}=    Set Variable    xpath: //ngb-datepicker-month//div[@aria-label='Sunday, August 10, 2025']/div[text()=' 10 ']
+    Select value from    ${dateDuedate}    ${dataDate}
     SeleniumLibrary.Click Element    ${dateDuedate}
     # Create request
     SeleniumLibrary.Click Element    ${btnCreateRequest}
@@ -140,6 +141,8 @@ Create new request ticket
     Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1250.30
     # ----- End Basis -----
     # ----- Case Flat -----
+    # # Input Flat
+    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1250.30
     # Input Flat (Update as Local Currency)
     IF    '${contractType}' == 'Flat'
         # Local Currency
@@ -173,6 +176,8 @@ Create new request ticket
     Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1500.40
     # ----- End Basis -----
     # ----- Case Flat -----
+    # # Input Flat
+    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1500.40
     # Input Flat (Update as Local Currency)
     IF    '${contractType}' == 'Flat'
         # Select Local Currency
@@ -205,7 +210,7 @@ Create new request ticket
         # Local Currency
         Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
         Select value from    ${ddlFlatCurrency}    ${liUSD}
-        # inpu Flat
+        # input Flat
         SeleniumLibrary.Input Text    ${inptFlat}    1750.23
         SeleniumLibrary.Input Text    ${inptTrasportFee}    45
     END
@@ -224,6 +229,6 @@ Create new request ticket
     Wait Until Element Is Visible    ${btnConfirm}    30s
     Click Element    ${btnConfirm}
     Wait Until Element Is Not Visible   ${loading}    30s
+    Wait Until Element Is Visible    ${txtSuccess}    30s
     Wait Until Element Is Not Visible    ${txtSuccess}    30s
-    Sleep    5s
     RETURN    ${requestID}

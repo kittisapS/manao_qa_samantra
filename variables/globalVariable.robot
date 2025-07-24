@@ -37,5 +37,5 @@ ${subMenuApproveRequestTicket}    xpath: //li/a[contains(text(),'Ticket Global T
 ${h2ApproveRequestTicket}    xpath: //h2[contains(text(),'รายการขออนุมัติจัดซื้อ')]
 
 ## ----- Toast message -----
-${txtSuccess}    xpath: //h4[text()='บันทึกเรียบร้อย']  
+${txtSuccess}    xpath: //h4[text()='บันทึกเรียบร้อย']
 ${txtCommentSuccess}    xpath: //h4[text()='ส่งความคิดเห็นสำเร็จ']  
