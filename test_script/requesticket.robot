@@ -217,4 +217,5 @@ Create new request ticket
     Wait Until Element Is Visible    ${btnConfirm}    30s
     Click Element    ${btnConfirm}
     Wait Until Element Is Not Visible   ${loading}    30s
-    Wait Until Element Is Not Visible    ${txtSuccess}    30s
+    Wait Until Element Is Visible    ${txtRequestSuccess}    30s
+    Wait Until Element Is Not Visible    ${txtRequestSuccess}    30s
