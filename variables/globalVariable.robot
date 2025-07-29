@@ -15,6 +15,7 @@ ${loading}    xpath:  //div[@class='cdk-overlay-container']
 ${btnMenu}    xpath: //img[@id='nav-user']
 ${btnLogout}    xpath: //a[text()='Logout ']
 ${btnOK}    xpath: //button[text()='OK']
+${toastLoginSuccess}    xpath: //div[@role='alertdialog' and @aria-label='Login successfully.']
 ## Parameters
 ${txtUsername}    manao_trader
 ${txtPassword}    123456
@@ -38,4 +39,6 @@ ${h2ApproveRequestTicket}    xpath: //h2[contains(text(),'รายการข�
 
 ## ----- Toast message -----
 ${txtSuccess}    xpath: //h4[text()='บันทึกเรียบร้อย']
+${txtEditedSuccess}    xpath: //h4[text()='บันทึกสำเร็จ']
+${txtRequestSuccess}    xpath: //h4[text()='ส่งคำขออนุมัติสำเร็จ']
 ${txtCommentSuccess}    xpath: //h4[text()='ส่งความคิดเห็นสำเร็จ']  

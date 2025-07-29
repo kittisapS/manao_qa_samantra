@@ -9,7 +9,8 @@ ${liAny}    xpath: //div/span[text()='รายเจ้า']
 ${ddlContractType}    xpath: //label[contains(text(),'ประเภทการซื้อ')]/following-sibling::ng-select
 ${ddlIngredient}    xpath: //label[contains(text(),'วัตถุดิบ')]/following-sibling::ng-select
 ${ddlDestination}    xpath: //label[contains(text(),'ปลายทาง')]/following-sibling::ng-select
-${dateDuedate}    xpath: //label[contains(text(),'วันที่ครบกำหนด')]/following-sibling::app-date-picker//input[@placeholder='วว/ดด/ปป']
+${dateDuedate}    xpath: //label[contains(text(),'วันที่ครบกำหนด')]/following-sibling::app-date-picker
+${ddlTime}    xpath: //ngb-datepicker//span[@class='ng-arrow-wrapper']
 ${date25}    xpath:  //ngb-datepicker-month//div[text()=' 25 ']
 ${btnCreateRequest}    xpath: //button[contains(text(),'สร้างรายการ')]
 ${ddlFlatCurrency}    xpath: //ng-select[@id='currencyTypeUsage']
