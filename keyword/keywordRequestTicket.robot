@@ -25,7 +25,7 @@ Get request no
     END
 
     # Add to File
-    Append To File    output.txt    Doc No: ${requestNo},ID: ${requestID},\n
+    Append To File    output.txt    Doc No:${requestNo},ID: ${requestID},\n
     Log To Console    Request No: ${requestNo}, ID: ${requestID}
     RETURN    ${requestID}
 
@@ -34,7 +34,7 @@ Set ticket date
     ${currentFulldate}=    DateTime.Get Current Date    result_format=%A, %B %d, %Y
     ${currentDate}=    DateTime.Get Current Date    result_format=%d
     ${currentTime}=    DateTime.Get Current Date    
-    ${newTime}=    DateTime.Add Time To Date    ${currentTime}    3 hours    result_format=%H
+    ${newTime}=    DateTime.Add Time To Date    ${currentTime}    1 hours    result_format=%H
     # Convert time to usabled format
     ${expectedTime}=    BuiltIn.Set Variable    ${newTime}:00
     # Select Due date
@@ -83,7 +83,9 @@ Create new request ticket
     Wait Until Element Is Visible   ${loading}    10s
     Wait Until Element Is Not Visible   ${loading}    10s
 
-    #Get Request No.
+    # Add info. to file
+        Append To File    output.txt    Request Type: ${requestType}, Contract Type: ${contractType}, 
+    #Get Request No. 
     ${requestID}=    Get request no    ${env}
 
     # Click add new supplier
