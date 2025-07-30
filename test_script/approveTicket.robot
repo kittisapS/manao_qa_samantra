@@ -113,10 +113,9 @@ Create Request Ticket and approve tickets
     # Go to Create request
      Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    DEV    SBM    ${RequestType}    ${ContractType}    Thailand    BRA    Conventional Vessel
-    #${requestID}=    Set Variable    3025
-
-    #Sleep    5s
+    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    Viet Nam    BRA    Conventional Vessel
+    # ${requestID}=    Set Variable    3334
+    # Sleep    5s
     # Assign index for users list
     ${index}=    Set Variable    0
     # Assign price to list
@@ -163,8 +162,9 @@ Create Request Ticket and approve tickets
 
 
 *** Test Cases ***      Request Type        Contract Type    Price 1       Price 2       Price 3       Price 4       Price 5        Price 6 (CEO)
-Case 4-1                Total                 Flat             800.758            80.231            78.881          70.125            800.758       800.758
-Case 4-2                Total               Flat             100           100           100           100           ${EMPTY}       ${EMPTY}
+Case 4-1                Total               Flat             800.758       800.231        780.881      780.881        801.758       801.758
+Case 4-2                Total               Basis             800.758       800.231        780.881      780.881        801.758       801.758
+# Case 4-2                Total               Flat             100           100           100           100           ${EMPTY}       ${EMPTY}
 # Case 4-3              Total           100           99            99            99            ${EMPTY}       ${EMPTY}
 # Case 4-4              Total           100           99            98            98            ${EMPTY}       ${EMPTY} 
 # Case 4-5              Total           96            ${EMPTY}      97            96            ${EMPTY}       99
@@ -189,9 +189,9 @@ Case 4-2                Total               Flat             100           100  
 # Case 6-4              Total           270           270           250           240           240            230
 # Case 6-5              Total           99            99            99            95            94             93
 # Case 6-6              Total           99            99            97            93            93             93
- Case 6-7              Total           Flat           99            98            97            96            94             94
+# Case 6-7              Total           Flat           888.25            98            97            96            94             94
 
-Data preparation 1        Any           Flat        ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation 1        Total         Flat        ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 Data preparation 2        Total         Flat        ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-Data preparation 3        Any           Basis       ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation 3        Total         Basis       ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 Data preparation 4        Total         Basis       ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
