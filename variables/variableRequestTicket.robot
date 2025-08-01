@@ -41,15 +41,12 @@ ${inptBasis}    xpath: //input[@id='basic']
 ${inptCBOT}    xpath: //input[@id='cbot']
 ${ddlCalProtein}    xpath: //label[contains(text(),'คำนวณราคาต่อโปรตีน 48% ')]/following-sibling::ng-select
 ${btnSave}    xpath: //button[text()=' บันทึก ']
-
-${dataShippingStart}     xpath: //ngb-datepicker-month//div[@aria-label='Tuesday, July 1, 2025']/div[text()=' 1 ']
-${dataShippingEnd}       xpath: //ngb-datepicker-month//div[@aria-label='Thursday, July 31, 2025']/div[text()=' 31 ']
 ${inptTopic}    xpath: //input[@name='topic']
 ${inptAdditionalDetail}    xpath: //h4[contains(text(),'เสนอ')]//ancestor::div/form//textarea[@id='additionalInfo']
 ${btnConfirm}    xpath: //button[text()='ยืนยัน']
-
 ${btnSaveDraft}    xpath: //button[text()=' บันทึกร่าง ']
 ${btnSubmitRequest}    xpath: //button[text()=' ส่งคำขออนุมัติ ']
+
 
 # ----- After saving -----
 ${hRequestNo}    xpath: //h4[contains(text(),'เลขที่คำขอจัดซื้อ')]

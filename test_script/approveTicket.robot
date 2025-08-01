@@ -144,7 +144,7 @@ Create Request Ticket and approve tickets
         Run Keyword If    '${price6}' != '${EMPTY}'    Append To List    ${priceList}    ${price6}
     # If price is empty
         Run Keyword If    '${price6}' == '${EMPTY}'    Append To List    ${priceList}    ${EMPTY}
-    
+
     Log To Console    Price list: @{priceList}
     FOR    ${price}    IN    @{priceList}
         ${approver}=    Evaluate    ${index} + 1
@@ -162,7 +162,7 @@ Create Request Ticket and approve tickets
 
 
 *** Test Cases ***      Request Type        Contract Type    Price 1       Price 2       Price 3       Price 4       Price 5        Price 6 (CEO)
-Case 4-1                Total               Flat             800.758       800.231        780.881      780.881        801.758       801.758
+Case 4-1                Total               Flat             800.758       800.231        780.881      780.881       801.758       801.758 
 Case 4-2                Total               Basis             800.758       800.231        780.881      780.881        801.758       801.758
 # Case 4-2                Total               Flat             100           100           100           100           ${EMPTY}       ${EMPTY}
 # Case 4-3              Total           100           99            99            99            ${EMPTY}       ${EMPTY}
@@ -191,7 +191,15 @@ Case 4-2                Total               Basis             800.758       800.
 # Case 6-6              Total           99            99            97            93            93             93
 # Case 6-7              Total           Flat           888.25            98            97            96            94             94
 
-Data preparation 1        Total         Flat        ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-Data preparation 2        Total         Flat        ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-Data preparation 3        Total         Basis       ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-Data preparation 4        Total         Basis       ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Flat 1        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Flat 2        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Flat 3        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Flat 4        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Flat 5        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Flat 6        Total         Flat        800.758          ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 1        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 2        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 3        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 4        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 5        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 6        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
