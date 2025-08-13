@@ -135,7 +135,7 @@ Create new request ticket
     Run Keyword If    '${requestType}' == 'Total'    Select value from    ${ddlPackage}    ${dataPackage}
     # Shipping start - end
     ${dataShippingStart}=    Set Shipping date    0
-    ${dataShippingEnd}=    Set Shipping date    30
+    ${dataShippingEnd}=    Set Shipping date    20
     SeleniumLibrary.Click Element    ${dateShippingStart}
     SeleniumLibrary.Click Element    ${dataShippingStart}
         # Shipping End 
