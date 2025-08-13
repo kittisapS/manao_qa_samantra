@@ -36,6 +36,7 @@ ${h4BusinessConclude}    xpath: //h4[contains(text(),'Business Conclude Page')]
 ## ----- Menu Approval -----
 ${subMenuApproveRequestTicket}    xpath: //li/a[contains(text(),'Ticket Global Trade')]
 ${h2ApproveRequestTicket}    xpath: //h2[contains(text(),'รายการขออนุมัติจัดซื้อ')]
+${Reject}    Reject
 
 ## ----- Toast message -----
 ${txtSuccess}    xpath: //h4[text()='บันทึกเรียบร้อย']
