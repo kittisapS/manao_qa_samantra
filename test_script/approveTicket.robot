@@ -11,7 +11,8 @@ Test Teardown    Close All Browsers
 *** Variables ***
 @{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive05   manao_ceo02
 ${passApprover}    123456
-${env}    DEV
+${dataDestination}    Thailand
+${env}    STG
 *** Keywords ***
 Go to Approval on that request ticket
     [Arguments]    ${env}    ${requestID}
@@ -108,12 +109,12 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Visible    ${txtCommentSuccess}    30s
     Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
 
-Create Request Ticket and approve tickets
+Create Request Ticket and approve tickets 
     [Arguments]    ${RequestType}    ${ContractType}   ${price1}    ${price2}    ${price3}    ${price4}    ${price5}    ${price6}
     # Go to Create request
      Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    Viet Nam    BRA    Conventional Vessel
+    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel
     # ${requestID}=    Set Variable    3334
     # Sleep    5s
     # Assign index for users list
