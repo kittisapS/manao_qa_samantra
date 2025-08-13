@@ -181,22 +181,8 @@ Create new request ticket
     Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1250.30
     # ----- End Basis -----
     # ----- Case Flat -----
-    # # Input Flat
-    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1250.30
-    # Input Flat (Update as Local Currency)
-    IF    '${contractType}' == 'Flat'
-        # Local Currency
-        Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
-        Select value from    ${ddlFlatCurrency}    ${liLocalCurrency}
-        # Select Local Currency
-        Wait Until Element Is Visible    ${ddlLocalCurrency}    30s
-        Select value from    ${ddlLocalCurrency}    ${li1st}
-        Wait Until Element Is Enabled    ${inptExchanageRate}
-        SeleniumLibrary.Input Text    ${inptExchanageRate}    35
-        # input flat 
-        SeleniumLibrary.Input Text    ${inptFlat}    43760.5
-        SeleniumLibrary.Input Text    ${inptTrasportFee}    35
-    END
+    # Input Flat
+    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1250.30
 
     # Save supplier
     SeleniumLibrary.Click Element    ${btnSave}
@@ -216,17 +202,9 @@ Create new request ticket
     Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1500.40
     # ----- End Basis -----
     # ----- Case Flat -----
-    # # Input Flat
-    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1500.40
-    # Input Flat (Update as Local Currency)
-    IF    '${contractType}' == 'Flat'
-        # Select Local Currency
-        Wait Until Element Is Enabled    ${inptExchanageRate}
-        SeleniumLibrary.Input Text    ${inptExchanageRate}    45
-        # input flat 
-        SeleniumLibrary.Input Text    ${inptFlat}    67518
-        SeleniumLibrary.Input Text    ${inptTrasportFee}    45
-    END
+    # Input Flat
+    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1500.40
+
     # Save supplier
     SeleniumLibrary.Click Element    ${btnSave}
 
@@ -245,11 +223,8 @@ Create new request ticket
     Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1750.23
     # ----- End Basis -----
     # ----- Case Flat -----
-    # Input Flat (Update as USD)
+    # Input Flat (USD)
     IF    '${contractType}' == 'Flat'
-        # Local Currency
-        Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
-        Select value from    ${ddlFlatCurrency}    ${liUSD}
         # input Flat
         SeleniumLibrary.Input Text    ${inptFlat}    1750.23
         SeleniumLibrary.Input Text    ${inptTrasportFee}    45
