@@ -22,3 +22,9 @@ ${btnSave}    xpath: //button[contains(text(),'บันทึก')]
 
 ${inptComment}    xpath: //textarea[@id='price-additional-info']
 ${btnSubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
+
+# Reject ticket
+${btnRejectTicket}    xpath: //button[contains(text(),'ปฏิเสธคำขอจัดซื้อ')]
+${btnConfirm}    xpath: //button[text()='ยืนยัน']
+${inptRejectComment}    xpath: //div[@class='modal-content']//textarea[@id='price-additional-info']
+${btnConfirmReject}    xpath: //div[@class='modal-content']//button[contains(text(),'ปฏิเสธคำขอจัดซื้อ')]
