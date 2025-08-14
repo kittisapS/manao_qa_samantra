@@ -1,5 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    OperatingSystem
 Resource    ../variables/globalVariable.robot
 
 *** Keywords ***
@@ -25,6 +26,7 @@ Open Samantra and login
     Wait Until Element Is Visible    ${toastLoginSuccess}    10s
     Click Element    ${toastLoginSuccess}
     Wait Until Element Is Not Visible    ${toastLoginSuccess}    10s
+    Append To File    output.txt    ${TEST_NAME} :
 
 Logout and then login
     [Arguments]    ${newUsername}    ${newPassword}
