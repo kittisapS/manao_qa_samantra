@@ -42,7 +42,6 @@ Logout and then login
     SeleniumLibrary.Input Text    ${inptPassword}    ${newPassword}
     SeleniumLibrary.Click Element    ${btnLogin}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2Welcome}    30s
-    Wait Until Element Is Not Visible    ${loading}    30s
     Wait Until Element Is Visible    ${toastLoginSuccess}    10s
     Click Element    ${toastLoginSuccess}
     Wait Until Element Is Not Visible    ${toastLoginSuccess}    10s
@@ -52,6 +51,8 @@ Go to Request Ticket menu
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuRequestTicket}    30s
     SeleniumLibrary.Click Element    ${subMenuRequestTicket}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicket}    30s
+    SeleniumLibrary.Wait Until Element Is Visible    ${loading}    30s
+    SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
 
 Go to Business Conclude menu
     SeleniumLibrary.Click Element    ${menuInterTrade}
@@ -64,7 +65,8 @@ Go to Approval Global Ticket menu
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuApproveRequestTicket}    30s
     SeleniumLibrary.Click Element    ${subMenuApproveRequestTicket}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2ApproveRequestTicket}    30s
-    Wait Until Element Is Not Visible    ${loading}    30s
+    SeleniumLibrary.Wait Until Element Is Visible    ${loading}    30s
+    SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
 
 Select value from
     [Arguments]    ${element}    ${list}
