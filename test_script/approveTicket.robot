@@ -160,11 +160,10 @@ Create Request Ticket and approve tickets
     [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}
     # Go to Create request
     Sleep    1s
-     Go to Request Ticket menu
+    Go to Request Ticket menu
     # Create new request ticket and get id
     ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel
     # ${requestID}=    Set Variable    3334
-    # Sleep    5s
     # Assign index for users list
     ${index}=    Set Variable    0
     # Assign price to list
