@@ -156,6 +156,10 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Visible    ${txtCommentSuccess}    30s
     Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
 
+    # Wait for reloading page
+    Wait Until Element Is Visible    ${loading}    30s
+    Wait Until Element Is Not Visible    ${loading}    30s
+
 Create Request Ticket and approve tickets 
     [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}
     # Go to Create request
