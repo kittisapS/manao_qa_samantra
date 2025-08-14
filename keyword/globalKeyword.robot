@@ -31,9 +31,16 @@ Logout and then login
     SeleniumLibrary.Wait Until Element Is Visible    ${btnMenu}    30s
     Set Focus To Element    ${btnMenu}
     Press Keys    ${btnMenu}    ENTER
-    #SeleniumLibrary.Click Element    ${btnMenu}
-    SeleniumLibrary.Wait Until Element Is Visible    ${btnLogout}    30s
-    SeleniumLibrary.Click Element    ${btnLogout}
+    SeleniumLibrary.Wait Until Element Is Visible    ${btnLogout}    3s
+    ${stateBtnLogout}=    Run Keyword And Return Status   Element Should Be Visible    ${btnLogout}
+    IF    '${stateBtnLogout}' == '${True}' 
+        SeleniumLibrary.Click Element    ${btnLogout}
+    ELSE
+        Set Focus To Element    ${btnMenu}
+        Press Keys    ${btnMenu}    ENTER
+        SeleniumLibrary.Wait Until Element Is Visible    ${btnLogout}    3s
+        SeleniumLibrary.Click Element    ${btnLogout}
+    END
     # Check error credential error modal
     ${stateErrorModal}=    Run Keyword And Return Status    SeleniumLibrary.Wait Until Element Is Visible    ${btnOK}    10s
     Run Keyword If    '${stateErrorModal}' == 'True'   SeleniumLibrary.Click Element    ${btnOK}
@@ -47,7 +54,7 @@ Logout and then login
     Wait Until Element Is Not Visible    ${toastLoginSuccess}    10s
  
 Go to Request Ticket menu
-    SeleniumLibrary.Click Element    ${menuInterTrade}
+    BuiltIn.Wait Until Keyword Succeeds    10    1s    SeleniumLibrary.Click Element    ${menuInterTrade}
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuRequestTicket}    30s
     SeleniumLibrary.Click Element    ${subMenuRequestTicket}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicket}    30s
@@ -55,13 +62,13 @@ Go to Request Ticket menu
     SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
 
 Go to Business Conclude menu
-    SeleniumLibrary.Click Element    ${menuInterTrade}
+    BuiltIn.Wait Until Keyword Succeeds    10    1s    SeleniumLibrary.Click Element    ${menuInterTrade}
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuBusinessConclude}    30s
     SeleniumLibrary.Click Element    ${subMenuBusinessConclude}
     SeleniumLibrary.Wait Until Element Is Visible    ${h4BusinessConclude}    30s
 
 Go to Approval Global Ticket menu
-    SeleniumLibrary.Click Element    ${menuApproval}
+    BuiltIn.Wait Until Keyword Succeeds    10    1s    SeleniumLibrary.Click Element    ${menuApproval}
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuApproveRequestTicket}    30s
     SeleniumLibrary.Click Element    ${subMenuApproveRequestTicket}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2ApproveRequestTicket}    30s
