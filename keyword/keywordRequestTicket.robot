@@ -276,7 +276,7 @@ Create new request ticket
     # Go back to detail page
     SeleniumLibrary.Go Back
     # Wait until the ticket page is shown
-    SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicket}    30s
+    SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicketDetail}    30s
     SeleniumLibrary.Wait Until Element Is Visible    ${loading}    30s
     SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
 

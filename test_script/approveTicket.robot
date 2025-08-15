@@ -9,9 +9,9 @@ Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
 *** Variables ***
-@{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive05   manao_ceo02
+@{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive12   manao_ceo02
 ${passApprover}    123456
-${env}    STG
+${env}    DEV
 ${dataDestination}    Thailand
 
 *** Keywords ***
@@ -220,12 +220,12 @@ Create Request Ticket and approve tickets
 *** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)
 # --------- Use these cases to prepare the test data ---------
 Data preparation Flat 1        Total         Flat        Purchase        1000           2000        1700        ${Reject}        ${Reject}        ${Reject}
-Data preparation Flat 2        Total         Flat        Price        800.758           800.231        780.881        ${Reject}        ${Reject}        ${Reject}
+Data preparation Flat 2        Total         Flat        Price        800.758           800.231        780.881        800.758           800.231        780.881
 # Data preparation Flat 3        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 4        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 5        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 6        Total         Flat        800.758          ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Basis 1        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
+Data preparation Basis 1        Total         Basis       Purchase           1000           2000        1700        1000           2000        1700
 # Data preparation Basis 2        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Basis 3        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Basis 4        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
@@ -233,31 +233,30 @@ Data preparation Flat 2        Total         Flat        Price        800.758   
 # Data preparation Basis 6        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 
 # --------- Use these cases to test the price compare logic ---------
-# Case 4-1                Total               Flat        Price             800.758       800.231        780.881      780.881       801.758       801.758 
-# Case 4-2                Total               Basis       Price             800.758       800.231        780.881      780.881        801.758       801.758
-# Case 4-2                Total               Flat        Price             100           100           100           100           ${EMPTY}       ${EMPTY}
-# Case 4-3              Total           Basis       Price     100           99            99            99            ${EMPTY}       ${EMPTY}
-# Case 4-4              Total           Flat        Price    100           99            98            98            ${EMPTY}       ${EMPTY} 
-# Case 4-5              Total           Basis       Price           96            ${EMPTY}      97            96            ${EMPTY}       99
-# Case 4-6              Total           Flat        Price    99            99            99            97            ${EMPTY}       98
-# Case 4-7              Total           Basis       Price           165           162           164           165           ${EMPTY}       ${EMPTY}
-# Case 5-1              Total           Flat        Price    285           280           281           281           280            ${EMPTY}
-# Case 5-2              Total           Basis       Price           250           250           245           240           240            ${EMPTY}
-# Case 5-3              Total           Flat        Price    250           250           250           240           240            ${EMPTY}
-# Case 5-4              Total           Basis       Price           99            99            99            95            94             ${EMPTY}
-# Case 5-5              Total           Flat        Price    77.4          77.6          80.5          71.3          70             ${EMPTY}
-# Case 5-6              Total           Basis       Price           68            68            68            ${EMPTY}      57             57
-# Case 5-7              Total           Flat        Price    70            75            72            ${EMPTY}      76             77
-# Case 5-8              Total           Basis       Price           99            98            97            96            95             ${EMPTY}
-# Case 5-9              Total           Flat        Price    50.55         51.39         51.2          50            55             ${EMPTY}
-# Case 5-10             Total           Basis       Price           77            77            77            ${EMPTY}      73             66
-# Case 5-11             Total           Flat        Price    77            77            78            78            ${EMPTY}       74
-# Case 5-12             Total           Basis       Price           165           162           164           165           164            ${EMPTY}
-# Case 5-13             Total           Flat        Price    280           280           280           260           250            ${EMPTY}           
-# Case 6-1              Total           Basis       Price           280           280           240           240           240            240
-# Case 6-2              Total           Flat        Price    250           240           240           210           210            210  
-# Case 6-3              Total           Basis       Price           250           240           240           230           220            210
-# Case 6-4              Total           Flat        Price    270           270           250           240           240            230
-# Case 6-5              Total           Basis       Price           99            99            99            95            94             93
-# Case 6-6              Total           Flat        Price    99            99            97            93            93             93
-# Case 6-7              Total           Basis       Price           888.25            98            97            96            94             94
+Case 4-1                Any               Flat        Price             80            80        78.8        70        ${EMPTY}        ${EMPTY}
+Case 4-2                Any               Basis       Price             100           100           100           100           ${EMPTY}       ${EMPTY}
+Case 4-3              Any           Basis       Price     100           99            99            99            ${EMPTY}       ${EMPTY}
+Case 4-4              Any           Flat        Price    100           99            98            98            ${EMPTY}       ${EMPTY} 
+Case 4-5              Any           Basis       Price           96            ${EMPTY}      97            96            ${EMPTY}       99
+Case 4-6              Any           Flat        Price    99            99            99            97            ${EMPTY}       98
+Case 4-7              Any           Basis       Price           165           162           164           165           ${EMPTY}       ${EMPTY}
+Case 5-1              Any           Flat        Price    285           280           281           281           280            ${EMPTY}
+Case 5-2              Any           Basis       Price           250           250           245           240           240            ${EMPTY}
+Case 5-3              Any           Flat        Price    250           250           250           240           240            ${EMPTY}
+Case 5-4              Any           Basis       Price           99            99            99            95            94             ${EMPTY}
+Case 5-5              Any           Flat        Price    77.4          77.6          80.5          71.3          70             ${EMPTY}
+Case 5-6              Any           Basis       Price           68            68            68            ${EMPTY}      57             57
+Case 5-7              Any           Flat        Price    70            75            72            ${EMPTY}      76             77
+Case 5-8              Any           Basis       Price           99            98            97            96            95             ${EMPTY}
+Case 5-9              Any           Flat        Price    50.55         51.39         51.2          50            55             ${EMPTY}
+Case 5-10             Any           Basis       Price           77            77            77            ${EMPTY}      73             66
+Case 5-11             Any           Flat        Price    77            77            78            78            ${EMPTY}       74
+Case 5-12             Any           Basis       Price           165           162           164           165           164            ${EMPTY}
+Case 5-13             Any           Flat        Price    280           280           280           260           250            ${EMPTY}           
+Case 6-1              Any           Basis       Price           280           280           240           240           240            240
+Case 6-2              Any           Flat        Price    250           240           240           210           210            210  
+Case 6-3              Any           Basis       Price           250           240           240           230           220            210
+Case 6-4              Any           Flat        Price    270           270           250           240           240            230
+Case 6-5              Any           Basis       Price           99            99            99            95            94             93
+Case 6-6              Any           Flat        Price    99            99            97            93            93             93
+Case 6-7              Any           Basis       Price           888.25            98            97            96            94             94
