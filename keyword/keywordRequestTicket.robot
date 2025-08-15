@@ -103,8 +103,6 @@ Create new request ticket
 
     # Add info. to file
     Append To File    output.txt    Request Type: ${requestType}, Contract Type: ${contractType}, 
-    #Get Request No. 
-    ${requestID}=    Get request no    ${env}
 
     # Click add new supplier
     SeleniumLibrary.Click Element    ${btnAddSupplier}
@@ -268,9 +266,20 @@ Create new request ticket
     Click Element    ${btnSubmitRequest}
     Wait Until Element Is Visible    ${btnConfirm}    30s
     Click Element    ${btnConfirm}
+    Wait Until Element Is Visible   ${loading}    30s
     Wait Until Element Is Not Visible   ${loading}    30s
     Run Keyword If    '${requestType}' == 'Any'    Wait Until Element Is Visible    ${txtSuccess}    30s
     Run Keyword If    '${requestType}' == 'Any'    Wait Until Element Is Not Visible    ${txtSuccess}    30s
     Run Keyword If    '${requestType}' == 'Total'    Wait Until Element Is Visible    ${txtRequestSuccess}    30s
     Run Keyword If    '${requestType}' == 'Total'    Wait Until Element Is Not Visible    ${txtRequestSuccess}    30s
+    
+    # Go back to detail page
+    SeleniumLibrary.Go Back
+    # Wait until the ticket page is shown
+    SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicket}    30s
+    SeleniumLibrary.Wait Until Element Is Visible    ${loading}    30s
+    SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
+
+    #Get Request No. 
+    ${requestID}=    Get request no    ${env}
     RETURN    ${requestID}
