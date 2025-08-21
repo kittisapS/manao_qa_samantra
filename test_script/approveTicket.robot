@@ -11,7 +11,7 @@ Test Teardown    Close All Browsers
 *** Variables ***
 @{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive12   manao_ceo02
 ${passApprover}    123456
-${env}    DEV
+${env}    STG
 ${dataDestination}    Thailand
 
 *** Keywords ***
@@ -116,7 +116,7 @@ Reject ticket
     Wait Until Element Is Not Visible    ${loading}    30s
 
 Go to tickets and submit comment - Any
-    [Arguments]    ${env}    ${requestID}    ${newPrice}    ${username}
+    [Arguments]    ${env}    ${requestID}    ${changeItem}    ${item}    ${username}
     # Go to specified ticket
     Go to Approval on that request ticket    ${env}    ${requestID}
     Wait Until Element Is Visible    ${loading}    30s
@@ -132,8 +132,22 @@ Go to tickets and submit comment - Any
     # Adjust data in the ปรับข้อมูล
     Wait Until Element Is Visible    ${txtAnyAdjustPrice}
     Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-    Set Focus To Element    ${inptAnyNewPriceHigh}
-    Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${newPrice}
+
+    # Check which data should be changed
+    IF    '${changeItem}' == 'QTY'
+        Wait Until Element Is Visible    ${inptAnyNewQTY}
+        Set Focus To Element    ${inptAnyNewQTY}
+        Press Keys    ${inptAnyNewQTY}    ${CTRLA}    ${item}
+        # Clik another element to enable the save button
+        Click Element    ${inptAnyNewPriceHigh}
+    ELSE IF    '${changeItem}' == 'Price'
+        Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+        Set Focus To Element    ${inptAnyNewPriceHigh}
+        Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}
+        # Clik another element to enable the save button
+        Click Element    ${inptAnyNewQTY}
+    END
+    
     # Comment
     Set Focus To Element    ${inptComment}
     Input Text    ${inptComment}    Inputted by robot ${username}
@@ -161,12 +175,12 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Not Visible    ${loading}    30s
 
 Create Request Ticket and approve tickets 
-    [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}
+    [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}     ${Amount}    ${price}    ${StartShipmentDate}    ${EndShipmentDate}
     # Go to Create request
     Sleep    1s
     Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel
+    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel     ${Amount}    ${price}    ${StartShipmentDate}    ${EndShipmentDate}
     # ${requestID}=    Set Variable    3334
     # Assign index for users list
     ${index}=    Set Variable    0
@@ -209,7 +223,7 @@ Create Request Ticket and approve tickets
                 Reject ticket    ${env}    ${requestID}    ${liUsername}[${index}]
             ELSE
                 Run Keyword If    '${RequestType}' == 'Total'   Go to tickets and submit comment - Total    ${env}    ${requestID}    ${changeItem}    ${item}    ${liUsername}[${index}]
-                Run Keyword If    '${RequestType}' == 'Any'   Go to tickets and submit comment - Any    ${env}    ${requestID}    ${item}    ${liUsername}[${index}]
+                Run Keyword If    '${RequestType}' == 'Any'   Go to tickets and submit comment - Any    ${env}    ${requestID}    ${changeItem}    ${item}    ${liUsername}[${index}]
                 Log To Console    Approved successfully.
             END
         END
@@ -217,15 +231,15 @@ Create Request Ticket and approve tickets
     END
 
 
-*** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)
+*** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)    Amount     Price     StartShipment    EndShipment 
 # --------- Use these cases to prepare the test data ---------
-Data preparation Flat 1        Total         Flat        Purchase        1000           2000        1700        ${Reject}        ${Reject}        ${Reject}
-Data preparation Flat 2        Total         Flat        Price        800.758           800.231        780.881        800.758           800.231        780.881
+Data preparation Flat 1        Any         Flat        QTY        1000           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}    100000    123.45        11            40
+Data preparation Flat 2        Any         Flat        Price        800.758           800.231        780.881        800.758           800.231        780.881    100000    123.45        11            40
 # Data preparation Flat 3        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 4        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 5        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 6        Total         Flat        800.758          ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-Data preparation Basis 1        Total         Basis       Purchase           1000           2000        1700        1000           2000        1700
+# Data preparation Basis 1        Total         Basis       Purchase           1000           2000        1700        1000           2000        1700
 # Data preparation Basis 2        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Basis 3        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Basis 4        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
@@ -233,30 +247,30 @@ Data preparation Basis 1        Total         Basis       Purchase           100
 # Data preparation Basis 6        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 
 # --------- Use these cases to test the price compare logic ---------
-Case 4-1                Any               Flat        Price             80            80        78.8        70        ${EMPTY}        ${EMPTY}
-Case 4-2                Any               Basis       Price             100           100           100           100           ${EMPTY}       ${EMPTY}
-Case 4-3              Any           Basis       Price     100           99            99            99            ${EMPTY}       ${EMPTY}
-Case 4-4              Any           Flat        Price    100           99            98            98            ${EMPTY}       ${EMPTY} 
-Case 4-5              Any           Basis       Price           96            ${EMPTY}      97            96            ${EMPTY}       99
-Case 4-6              Any           Flat        Price    99            99            99            97            ${EMPTY}       98
-Case 4-7              Any           Basis       Price           165           162           164           165           ${EMPTY}       ${EMPTY}
-Case 5-1              Any           Flat        Price    285           280           281           281           280            ${EMPTY}
-Case 5-2              Any           Basis       Price           250           250           245           240           240            ${EMPTY}
-Case 5-3              Any           Flat        Price    250           250           250           240           240            ${EMPTY}
-Case 5-4              Any           Basis       Price           99            99            99            95            94             ${EMPTY}
-Case 5-5              Any           Flat        Price    77.4          77.6          80.5          71.3          70             ${EMPTY}
-Case 5-6              Any           Basis       Price           68            68            68            ${EMPTY}      57             57
-Case 5-7              Any           Flat        Price    70            75            72            ${EMPTY}      76             77
-Case 5-8              Any           Basis       Price           99            98            97            96            95             ${EMPTY}
-Case 5-9              Any           Flat        Price    50.55         51.39         51.2          50            55             ${EMPTY}
-Case 5-10             Any           Basis       Price           77            77            77            ${EMPTY}      73             66
-Case 5-11             Any           Flat        Price    77            77            78            78            ${EMPTY}       74
-Case 5-12             Any           Basis       Price           165           162           164           165           164            ${EMPTY}
-Case 5-13             Any           Flat        Price    280           280           280           260           250            ${EMPTY}           
-Case 6-1              Any           Basis       Price           280           280           240           240           240            240
-Case 6-2              Any           Flat        Price    250           240           240           210           210            210  
-Case 6-3              Any           Basis       Price           250           240           240           230           220            210
-Case 6-4              Any           Flat        Price    270           270           250           240           240            230
-Case 6-5              Any           Basis       Price           99            99            99            95            94             93
-Case 6-6              Any           Flat        Price    99            99            97            93            93             93
-Case 6-7              Any           Basis       Price           888.25            98            97            96            94             94
+# Case 4-1                Any               Flat        Price             80            80        78.8        70        ${EMPTY}        ${EMPTY}
+# Case 4-2                Any               Basis       Price             100           100           100           100           ${EMPTY}       ${EMPTY}
+# Case 4-3              Any           Basis       Price     100           99            99            99            ${EMPTY}       ${EMPTY}
+# Case 4-4              Any           Flat        Price    100           99            98            98            ${EMPTY}       ${EMPTY} 
+# Case 4-5              Any           Basis       Price           96            ${EMPTY}      97            96            ${EMPTY}       99
+# Case 4-6              Any           Flat        Price    99            99            99            97            ${EMPTY}       98
+# Case 4-7              Any           Basis       Price           165           162           164           165           ${EMPTY}       ${EMPTY}
+# Case 5-1              Any           Flat        Price    285           280           281           281           280            ${EMPTY}
+# Case 5-2              Any           Basis       Price           250           250           245           240           240            ${EMPTY}
+# Case 5-3              Any           Flat        Price    250           250           250           240           240            ${EMPTY}
+# Case 5-4              Any           Basis       Price           99            99            99            95            94             ${EMPTY}
+# Case 5-5              Any           Flat        Price    77.4          77.6          80.5          71.3          70             ${EMPTY}
+# Case 5-6              Any           Basis       Price           68            68            68            ${EMPTY}      57             57
+# Case 5-7              Any           Flat        Price    70            75            72            ${EMPTY}      76             77
+# Case 5-8              Any           Basis       Price           99            98            97            96            95             ${EMPTY}
+# Case 5-9              Any           Flat        Price    50.55         51.39         51.2          50            55             ${EMPTY}
+# Case 5-10             Any           Basis       Price           77            77            77            ${EMPTY}      73             66
+# Case 5-11             Any           Flat        Price    77            77            78            78            ${EMPTY}       74
+# Case 5-12             Any           Basis       Price           165           162           164           165           164            ${EMPTY}
+# Case 5-13             Any           Flat        Price    280           280           280           260           250            ${EMPTY}           
+# Case 6-1              Any           Basis       Price           280           280           240           240           240            240
+# Case 6-2              Any           Flat        Price    250           240           240           210           210            210  
+# Case 6-3              Any           Basis       Price           250           240           240           230           220            210
+# Case 6-4              Any           Flat        Price    270           270           250           240           240            230
+# Case 6-5              Any           Basis       Price           99            99            99            95            94             93
+# Case 6-6              Any           Flat        Price    99            99            97            93            93             93
+# Case 6-7              Any           Basis       Price           888.25            98            97            96            94             94

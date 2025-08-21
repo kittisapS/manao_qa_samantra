@@ -11,6 +11,7 @@ ${btnAdjustData}    xpath: //button[contains(text(),'ปรับข้อมู
 ${chkSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][1]//mat-checkbox
 ${btnAdjustDataSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][1]//button[contains(text(),'ปรับข้อมูล')]
 ${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
+${inptAnyNewQTY}    xpath: //input[@formcontrolname='quantityNew']
 ${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
 ${btnAnySubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
 

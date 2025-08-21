@@ -1,6 +1,6 @@
 *** Variables ***
 # Key
-${CTRLA}    CTRL+A
+${CTRLA}    COMMAND+A
 
 ## ----- Login -----
 ${urlDev}    https://samantra-dev.fitcp.com/
@@ -17,7 +17,7 @@ ${btnLogout}    xpath: //a[text()='Logout ']
 ${btnOK}    xpath: //button[text()='OK']
 ${toastLoginSuccess}    xpath: //div[@role='alertdialog' and @aria-label='Login successfully.']
 ## Parameters
-${txtUsername}    manao_trader
+${txtUsername}    manao_palm
 ${txtPassword}    123456
 ## ----- End Login -----
 

@@ -16,6 +16,7 @@ Get request no
     ${url}=    Get Location
     ${trimmedURL}=    Strip String    ${url}
     # Validate if env == Dev
+        ${dataShippingStart}    Set Variable    xpath://div[@role='gridcell' and @aria-label='Friday, September 5, 2025']//div[contains(@class,'custom-day')]
     IF    '${env}' == 'DEV'
              ${requestID}=    Replace String    ${trimmedURL}    https://samantra-dev.fitcp.com/globaltrade/request-ticket/proposaledit/    ${EMPTY}   
     END
@@ -67,7 +68,10 @@ Set Shipping date
     [Return]    ${dataShipping}
 
 Create new request ticket
-    [Arguments]    ${env}    ${ingredient}    ${requestType}    ${contractType}    ${destination}    ${origin}    ${seaFreight}
+    [Arguments]    ${env}    ${ingredient}    ${requestType}    ${contractType}    ${destination}    ${origin}    ${seaFreight}     ${Amount}    ${price}    ${StartShipmentDate}    ${EndShipmentDate}
+    
+    ${is_list}=    Evaluate    isinstance(${EndShipmentDate}, list)
+     Log To Console    Is list: ${is_list}
     # Create new request
     SeleniumLibrary.Wait Until Element Is Visible    ${btnCreateNewRequest}
     Wait Until Element Is Not Visible   ${loading}
@@ -115,7 +119,7 @@ Create new request ticket
     SeleniumLibrary.Input Text    ${inptSpec}    1000
     # Input MaxCapacity
     Run Keyword If    '${requestType}' == 'Total'   SeleniumLibrary.Input Text    ${inptMaxCapacity}    1000
-    Run Keyword If    '${requestType}' == 'Any'     SeleniumLibrary.Input Text    ${inptQuantity}    1000
+    Run Keyword If    '${requestType}' == 'Any'     SeleniumLibrary.Input Text    ${inptQuantity}    ${Amount}
     # Select Origin
     ${dataOrigin}    Set Variable      xpath: //span[text()='${origin}']//ancestor::div[@role='option']
     Select value from    ${ddlOrigin}    ${dataOrigin}
@@ -132,8 +136,8 @@ Create new request ticket
     ${dataPackage}    Set Variable    xpath: //div[@role='option'][1]
     Run Keyword If    '${requestType}' == 'Total'    Select value from    ${ddlPackage}    ${dataPackage}
     # Shipping start - end
-    ${dataShippingStart}=    Set Shipping date    0
-    ${dataShippingEnd}=    Set Shipping date    20
+    ${dataShippingStart}=    Set Shipping date    ${StartShipmentDate}
+    ${dataShippingEnd}=    Set Shipping date    ${EndShipmentDate}
     SeleniumLibrary.Click Element    ${dateShippingStart}
     SeleniumLibrary.Click Element    ${dataShippingStart}
         # Shipping End 
@@ -147,41 +151,20 @@ Create new request ticket
         Run Keyword If    '${contractType}' == 'Basis'    Select value from    ${ddlContract}    ${dataContract}  
     END 
     # Input Price
-    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1000
-    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptCBOT}    10000
+    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    ${price}
+    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptCBOT}    100
     # Select Proteitn (Force as Basis + CBOT)
     Run Keyword If    '${contractType}' == 'Basis'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Basis + CBOT']//ancestor::div[@role='option']
     # ----- End Basis -----
 
     # ----- Case Flat -----
-    # Input Flat
-    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1000
-    # Input Factory
-    Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptTrasportFee}    25
-    # Select Proteitn (Force as Flat)
-    Run Keyword If    '${contractType}' == 'Flat'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Total']//ancestor::div[@role='option']
- 
-    # Save supplier
-    SeleniumLibrary.Click Element    ${btnSave}
-
-    # ----- Create 2nd supplier -----
-    # Click add new supplier
-    SeleniumLibrary.Click Element    ${btnAddSupplier}
-    SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
-    Sleep    1s
-    # Click supplier
-    SeleniumLibrary.Click Element    ${ddlSupplier}
-    ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[5]/span
-    SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
-    SeleniumLibrary.Click Element    ${dataSupplier}
-    # ----- Case Basis -----
-    # Input Price
-    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1250.30
-    # ----- End Basis -----
-    # ----- Case Flat -----
     # # Input Flat
-    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1250.30
-    # Input Flat (Update as Local Currency)
+    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    ${price}
+    # # Input Factory
+    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptTrasportFee}    25
+    # # Select Proteitn (Force as Flat)
+    # Run Keyword If    '${contractType}' == 'Flat'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Total']//ancestor::div[@role='option']
+
     IF    '${contractType}' == 'Flat'
         # Local Currency
         Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
@@ -191,69 +174,110 @@ Create new request ticket
         Select value from    ${ddlLocalCurrency}    ${li1st}
         Wait Until Element Is Enabled    ${inptExchanageRate}
         SeleniumLibrary.Input Text    ${inptExchanageRate}    35
-        # input flat 
-        SeleniumLibrary.Input Text    ${inptFlat}    43760.5
-        SeleniumLibrary.Input Text    ${inptTrasportFee}    35
+        # input flat         
+        ${flat}=    Evaluate    ${price} * 35
+        ${fee}=    Evaluate    35 * 35
+        SeleniumLibrary.Input Text    ${inptTrasportFee}    ${fee}
+        SeleniumLibrary.Input Text    ${inptFlat}    ${flat}
+        SeleniumLibrary.Input Text    ${inptTrasportFee}    ${fee}
+        Select value from    ${ddlCalProtein}    xpath: //span[text()='Total']//ancestor::div[@role='option']
     END
 
+
+ 
     # Save supplier
     SeleniumLibrary.Click Element    ${btnSave}
 
-    # ----- Create 3rd supplier -----
-    # Click add new supplier
-    SeleniumLibrary.Click Element    ${btnAddSupplier}
-    SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
-    Sleep    2s
-    # Click supplier
-    SeleniumLibrary.Click Element    ${ddlSupplier}
-    ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[8]/span
-    SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
-    SeleniumLibrary.Click Element    ${dataSupplier}
+    # ----- Create 2nd supplier -----
+    # # Click add new supplier
+    # SeleniumLibrary.Click Element    ${btnAddSupplier}
+    # SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
+    # Sleep    1s
+    # # Click supplier
+    # SeleniumLibrary.Click Element    ${ddlSupplier}
+    # ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[5]/span
+    # SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
+    # SeleniumLibrary.Click Element    ${dataSupplier}
+    # # ----- Case Basis -----
+    # # Input Price
+    # Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    ${price}
+    # # ----- End Basis -----
+    # # ----- Case Flat -----
+    # # # Input Flat
+    # # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1250.30
+    # # Input Flat (Update as Local Currency)
+    # IF    '${contractType}' == 'Flat'
+    #     # Local Currency
+    #     Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
+    #     Select value from    ${ddlFlatCurrency}    ${liLocalCurrency}
+    #     # Select Local Currency
+    #     Wait Until Element Is Visible    ${ddlLocalCurrency}    30s
+    #     Select value from    ${ddlLocalCurrency}    ${li1st}
+    #     Wait Until Element Is Enabled    ${inptExchanageRate}
+    #     SeleniumLibrary.Input Text    ${inptExchanageRate}    35
+    #     # input flat 
+    #     SeleniumLibrary.Input Text    ${inptFlat}    ${price}
+    #     SeleniumLibrary.Input Text    ${inptTrasportFee}    35
+    # END
+
+    # # Save supplier
+    # SeleniumLibrary.Click Element    ${btnSave}
+
+    # # ----- Create 3rd supplier -----
+    # # Click add new supplier
+    # SeleniumLibrary.Click Element    ${btnAddSupplier}
+    # SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
+    # Sleep    2s
+    # # Click supplier
+    # SeleniumLibrary.Click Element    ${ddlSupplier}
+    # ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[8]/span
+    # SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
+    # SeleniumLibrary.Click Element    ${dataSupplier}
+    # # ----- Case Basis -----
+    # # Input Price
+    # Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1500.40
+    # # ----- End Basis -----
+    # # ----- Case Flat -----
+    # # # Input Flat
+    # # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1500.40
+    # # Input Flat (Update as Local Currency)
+    # IF    '${contractType}' == 'Flat'
+    #     # Select Local Currency
+    #     Wait Until Element Is Enabled    ${inptExchanageRate}
+    #     SeleniumLibrary.Input Text    ${inptExchanageRate}    45
+    #     # input flat 
+    #     SeleniumLibrary.Input Text    ${inptFlat}    67518
+    #     SeleniumLibrary.Input Text    ${inptTrasportFee}    45
+    # END
+    # # Save supplier
+    # SeleniumLibrary.Click Element    ${btnSave}
+
+    # # ----- Create 4th supplier -----
+    # # Click add new supplier
+    # SeleniumLibrary.Click Element    ${btnAddSupplier}
+    # SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
+    # Sleep    2s
+    # # Click supplier
+    # SeleniumLibrary.Click Element    ${ddlSupplier}
+    # ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[10]/span
+    # SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
+    # SeleniumLibrary.Click Element    ${dataSupplier}
     # ----- Case Basis -----
     # Input Price
-    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1500.40
-    # ----- End Basis -----
-    # ----- Case Flat -----
-    # # Input Flat
-    # Run Keyword If    '${contractType}' == 'Flat'    SeleniumLibrary.Input Text    ${inptFlat}    1500.40
-    # Input Flat (Update as Local Currency)
-    IF    '${contractType}' == 'Flat'
-        # Select Local Currency
-        Wait Until Element Is Enabled    ${inptExchanageRate}
-        SeleniumLibrary.Input Text    ${inptExchanageRate}    45
-        # input flat 
-        SeleniumLibrary.Input Text    ${inptFlat}    67518
-        SeleniumLibrary.Input Text    ${inptTrasportFee}    45
-    END
+    # Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1750.23
+    # # ----- End Basis -----
+    # # ----- Case Flat -----
+    # # Input Flat (Update as USD)
+    # IF    '${contractType}' == 'Flat'
+    #     # Local Currency
+    #     Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
+    #     Select value from    ${ddlFlatCurrency}    ${liUSD}
+    #     # input Flat
+    #     SeleniumLibrary.Input Text    ${inptFlat}    1750.23
+    #     SeleniumLibrary.Input Text    ${inptTrasportFee}    45
+    # END
     # Save supplier
-    SeleniumLibrary.Click Element    ${btnSave}
-
-    # ----- Create 4th supplier -----
-    # Click add new supplier
-    SeleniumLibrary.Click Element    ${btnAddSupplier}
-    SeleniumLibrary.Wait Until Element Is Visible    ${txtSupplierFlat}
-    Sleep    2s
-    # Click supplier
-    SeleniumLibrary.Click Element    ${ddlSupplier}
-    ${dataSupplier}    Set Variable     xpath: //ng-dropdown-panel//div[10]/span
-    SeleniumLibrary.Wait Until Element Is Visible    ${dataSupplier}
-    SeleniumLibrary.Click Element    ${dataSupplier}
-    # ----- Case Basis -----
-    # Input Price
-    Run Keyword If    '${contractType}' == 'Basis'    SeleniumLibrary.Input Text    ${inptBasis}    1750.23
-    # ----- End Basis -----
-    # ----- Case Flat -----
-    # Input Flat (Update as USD)
-    IF    '${contractType}' == 'Flat'
-        # Local Currency
-        Wait Until Element Is Visible    ${ddlFlatCurrency}    30s
-        Select value from    ${ddlFlatCurrency}    ${liUSD}
-        # input Flat
-        SeleniumLibrary.Input Text    ${inptFlat}    1750.23
-        SeleniumLibrary.Input Text    ${inptTrasportFee}    45
-    END
-    # Save supplier
-    SeleniumLibrary.Click Element    ${btnSave}
+    # SeleniumLibrary.Click Element    ${btnSave}
 
     # Input topic
     Set Focus To Element     ${inptTopic}
