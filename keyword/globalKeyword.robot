@@ -33,7 +33,6 @@ Logout and then login
     SeleniumLibrary.Wait Until Element Is Visible    ${btnMenu}    30s
     Set Focus To Element    ${btnMenu}
     Press Keys    ${btnMenu}    ENTER
-    SeleniumLibrary.Wait Until Element Is Visible    ${btnLogout}    3s
     ${stateBtnLogout}=    Run Keyword And Return Status   Element Should Be Visible    ${btnLogout}
     IF    '${stateBtnLogout}' == '${True}' 
         SeleniumLibrary.Click Element    ${btnLogout}
