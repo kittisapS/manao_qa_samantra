@@ -36,6 +36,7 @@ Set ticket date
     ${currentMonth}=    DateTime.Convert Date    ${now}    result_format=%B
     ${currentDay}=    DateTime.Convert Date    ${now}    result_format=%A
     ${currentDate}=    DateTime.Convert Date    ${now}    result_format=%d
+    # Remove 0 from each date that less than 10
     ${currentDateNoPadding}=    Replace String Using Regexp    ${currentDate}    ^0    ${EMPTY}
     ${currentFulldate}=    BuiltIn.Set Variable    ${currentDay}, ${currentMonth} ${currentDateNoPadding}, ${currentYear}
     ${newTime}=    DateTime.Add Time To Date    ${now}    2 hours    result_format=%H
@@ -53,18 +54,31 @@ Set ticket date
     SeleniumLibrary.Click Element    ${dataTime}
 
 Set Shipping date
-    [Arguments]    ${increment}
+    [Documentation]    To set the shipping date based on current year and month
     # Assign date based on today + increment
     ${now}=    DateTime.Get Current Date
-    ${newDate}=    DateTime.Add Time To Date    ${now}    ${increment} days
-    ${year}=    DateTime.Convert Date    ${newDate}    result_format=%Y
-    ${month}=    DateTime.Convert Date    ${newDate}    result_format=%B
-    ${day}=    DateTime.Convert Date    ${newDate}    result_format=%A
-    ${date}=    DateTime.Convert Date    ${newDate}    result_format=%d
-    ${dateNoPadding}=    Replace String Using Regexp    ${date}    ^0    ${EMPTY}
-    ${fulldate}=    BuiltIn.Set Variable    ${day}, ${month} ${dateNoPadding}, ${year}
-    ${dataShipping}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldate}']/div[text()=' ${dateNoPadding} ']
-    [Return]    ${dataShipping}
+    ${year}=    DateTime.Convert Date    ${now}    result_format=%Y
+    ${month}=    DateTime.Convert Date    ${now}    result_format=%m
+    ${formattedMonth}=    DateTime.Convert Date    ${now}    result_format=%B
+    ${startDate}=    BuiltIn.Set Variable    1
+    ${endDate}=    BuiltIn.Set Variable    30
+    ${firstDate}=    Convert Date    ${year}-${month}-01
+    ${lastDate}=    Convert Date    ${year}-${month}-30
+    ${dayOfWeek1st}=    DateTime.Convert Date    ${firstDate}    result_format=%A
+    ${dayOfWeek30th}=    DateTime.Convert Date    ${lastDate}    result_format=%A
+    # Set date as full format
+    ${fulldateStart}=    BuiltIn.Set Variable    ${dayOfWeek1st}, ${formattedMonth} ${startDate}, ${year}
+    ${fulldateEnd}=    BuiltIn.Set Variable    ${dayOfWeek30th}, ${formattedMonth} ${endDate}, ${year}
+    # Set datepicker variables
+    ${dataShippingStart}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldateStart}']/div[text()=' ${startDate} ']
+    ${dataShippingEnd}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldateEnd}']/div[text()=' ${endDate} ']
+    # Set and click Shipping Start 
+    SeleniumLibrary.Click Element    ${dateShippingStart}
+    SeleniumLibrary.Click Element    ${dataShippingStart}
+    # Set and click Shipping End 
+    SeleniumLibrary.Click Element    ${dateShippingEnd}
+    SeleniumLibrary.Click Element    ${dataShippingEnd}
+
 
 Create new request ticket
     [Arguments]    ${env}    ${ingredient}    ${requestType}    ${contractType}    ${destination}    ${origin}    ${seaFreight}
@@ -131,14 +145,9 @@ Create new request ticket
     # Select Package (Total)
     ${dataPackage}    Set Variable    xpath: //div[@role='option'][1]
     Run Keyword If    '${requestType}' == 'Total'    Select value from    ${ddlPackage}    ${dataPackage}
+
     # Shipping start - end
-    ${dataShippingStart}=    Set Shipping date    0
-    ${dataShippingEnd}=    Set Shipping date    20
-    SeleniumLibrary.Click Element    ${dateShippingStart}
-    SeleniumLibrary.Click Element    ${dataShippingStart}
-        # Shipping End 
-    SeleniumLibrary.Click Element    ${dateShippingEnd}
-    SeleniumLibrary.Click Element    ${dataShippingEnd}
+    Set Shipping date
 
     # ----- Case Basis -----
     # Select Contract (Total)
@@ -276,7 +285,7 @@ Create new request ticket
     # Go back to detail page
     SeleniumLibrary.Go Back
     # Wait until the ticket page is shown
-    SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicket}    30s
+    SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicketDetail}    30s
     SeleniumLibrary.Wait Until Element Is Visible    ${loading}    30s
     SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
 

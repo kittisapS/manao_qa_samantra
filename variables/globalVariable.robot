@@ -28,6 +28,7 @@ ${menuApproval}    xpath: //div/a[contains(text(),'Approval')]
 ## ----- Menu Request Ticket -----
 ${subMenuRequestTicket}    xpath: //li/a[contains(text(),'Request Ticket')]
 ${h2RequestTicket}    xpath: //h2[contains(text(),'รายการคำขอจัดซื้อขออนุมัติ')]
+${h2RequestTicketDetail}    xpath: //h2[contains(text(),'รายละเอียดคำขอจัดซื้อ')]
 
 ## ----- Menu Business Conclude -----
 ${subMenuBusinessConclude}    xpath: //li/a[contains(text(),'Business Conclude')]
