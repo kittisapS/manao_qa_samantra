@@ -9,9 +9,9 @@ Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
 *** Variables ***
-@{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive12   manao_ceo02
-${passApprover}    123456
-${env}    DEV
+@{liUsername}    manaoAutomate_executive01	  manaoAutomate_executive02   manaoAutomate_executive03   manaoAutomate_executive04   manaoAutomate_executive05    manaoAutomate_ceo
+${passApprover}    Qa123456
+${env}    STG
 ${dataDestination}    Thailand
 
 *** Keywords ***
@@ -46,12 +46,14 @@ Go to tickets and submit comment - Total
         Wait Until Element Is Visible    ${inptPurchaseTarget}
         Set Focus To Element    ${inptPurchaseTarget}
         Press Keys    ${inptPurchaseTarget}    ${CTRLA}    ${item}
+        Sleep    0.5s
         # Clik another element to enable the save button
         Click Element    ${inptAdjustPrice}
     ELSE IF    '${changeItem}' == 'Price'
         Wait Until Element Is Visible    ${inptAdjustPrice}
         Set Focus To Element    ${inptAdjustPrice}
         Press Keys    ${inptAdjustPrice}    ${CTRLA}    ${item}
+        Sleep    0.5s
         # Clik another element to enable the save button
         Click Element    ${inptPurchaseTarget}
     END
@@ -219,7 +221,7 @@ Create Request Ticket and approve tickets
 
 *** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)
 # --------- Use these cases to prepare the test data ---------
-Data preparation Flat 1        Total         Flat        Purchase        1000           2000        1700        ${Reject}        ${Reject}        ${Reject}
+Data preparation Flat 1        Total         Flat        Purchase        ${EMPTY}           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 Data preparation Flat 2        Total         Flat        Price        800.758           800.231        780.881        800.758           800.231        780.881
 # Data preparation Flat 3        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
 # Data preparation Flat 4        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
