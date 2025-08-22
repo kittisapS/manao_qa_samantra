@@ -9,8 +9,8 @@ Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
 *** Variables ***
-@{liUsername}=    @{usernameSet2}
-${passwordApprover}=    ${passwordApproverSet2}
+@{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive12   manao_ceo02
+${passApprover}    123456
 ${env}    STG
 ${dataDestination}    Thailand
 
@@ -46,14 +46,12 @@ Go to tickets and submit comment - Total
         Wait Until Element Is Visible    ${inptPurchaseTarget}
         Set Focus To Element    ${inptPurchaseTarget}
         Press Keys    ${inptPurchaseTarget}    ${CTRLA}    ${item}
-        Sleep    0.5s
         # Clik another element to enable the save button
         Click Element    ${inptAdjustPrice}
     ELSE IF    '${changeItem}' == 'Price'
         Wait Until Element Is Visible    ${inptAdjustPrice}
         Set Focus To Element    ${inptAdjustPrice}
         Press Keys    ${inptAdjustPrice}    ${CTRLA}    ${item}
-        Sleep    0.5s
         # Clik another element to enable the save button
         Click Element    ${inptPurchaseTarget}
     END
@@ -219,7 +217,7 @@ Create Request Ticket and approve tickets
         #Log To Console    Current Approver: ${approver}
         IF    '${item}' != '${EMPTY}'
             # Re-login
-            Logout and then login    ${liUsername}[${index}]    ${passwordApprover}
+            Logout and then login    ${liUsername}[${index}]    ${passApprover}
             # Approve with expected user
             IF    '${item}' == '${Reject}'
                 Reject ticket    ${env}    ${requestID}    ${liUsername}[${index}]

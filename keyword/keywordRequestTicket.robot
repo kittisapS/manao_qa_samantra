@@ -54,31 +54,18 @@ Set ticket date
     SeleniumLibrary.Click Element    ${dataTime}
 
 Set Shipping date
-    [Documentation]    To set the shipping date based on current year and month
+    [Arguments]    ${increment}
     # Assign date based on today + increment
     ${now}=    DateTime.Get Current Date
-    ${year}=    DateTime.Convert Date    ${now}    result_format=%Y
-    ${month}=    DateTime.Convert Date    ${now}    result_format=%m
-    ${formattedMonth}=    DateTime.Convert Date    ${now}    result_format=%B
-    ${startDate}=    BuiltIn.Set Variable    1
-    ${endDate}=    BuiltIn.Set Variable    30
-    ${firstDate}=    Convert Date    ${year}-${month}-01
-    ${lastDate}=    Convert Date    ${year}-${month}-30
-    ${dayOfWeek1st}=    DateTime.Convert Date    ${firstDate}    result_format=%A
-    ${dayOfWeek30th}=    DateTime.Convert Date    ${lastDate}    result_format=%A
-    # Set date as full format
-    ${fulldateStart}=    BuiltIn.Set Variable    ${dayOfWeek1st}, ${formattedMonth} ${startDate}, ${year}
-    ${fulldateEnd}=    BuiltIn.Set Variable    ${dayOfWeek30th}, ${formattedMonth} ${endDate}, ${year}
-    # Set datepicker variables
-    ${dataShippingStart}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldateStart}']/div[text()=' ${startDate} ']
-    ${dataShippingEnd}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldateEnd}']/div[text()=' ${endDate} ']
-    # Set and click Shipping Start 
-    SeleniumLibrary.Click Element    ${dateShippingStart}
-    SeleniumLibrary.Click Element    ${dataShippingStart}
-    # Set and click Shipping End 
-    SeleniumLibrary.Click Element    ${dateShippingEnd}
-    SeleniumLibrary.Click Element    ${dataShippingEnd}
-
+    ${newDate}=    DateTime.Add Time To Date    ${now}    ${increment} days
+    ${year}=    DateTime.Convert Date    ${newDate}    result_format=%Y
+    ${month}=    DateTime.Convert Date    ${newDate}    result_format=%B
+    ${day}=    DateTime.Convert Date    ${newDate}    result_format=%A
+    ${date}=    DateTime.Convert Date    ${newDate}    result_format=%d
+    ${dateNoPadding}=    Replace String Using Regexp    ${date}    ^0    ${EMPTY}
+    ${fulldate}=    BuiltIn.Set Variable    ${day}, ${month} ${dateNoPadding}, ${year}
+    ${dataShipping}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldate}']/div[text()=' ${dateNoPadding} ']
+    [Return]    ${dataShipping}
 
 Create new request ticket
     [Arguments]    ${env}    ${ingredient}    ${requestType}    ${contractType}    ${destination}    ${origin}    ${seaFreight}     ${Amount}    ${price}    ${StartShipmentDate}    ${EndShipmentDate}
@@ -148,16 +135,14 @@ Create new request ticket
     # Select Package (Total)
     ${dataPackage}    Set Variable    xpath: //div[@role='option'][1]
     Run Keyword If    '${requestType}' == 'Total'    Select value from    ${ddlPackage}    ${dataPackage}
-
     # Shipping start - end
     ${dataShippingStart}=    Set Shipping date    ${StartShipmentDate}
+    ${dataShippingEnd}=    Set Shipping date    ${EndShipmentDate}
     SeleniumLibrary.Click Element    ${dateShippingStart}
     SeleniumLibrary.Click Element    ${dataShippingStart}
         # Shipping End 
     SeleniumLibrary.Click Element    ${dateShippingEnd}
     SeleniumLibrary.Click Element    ${dataShippingEnd}
-    ${dataShippingEnd}=    Set Shipping date    ${EndShipmentDate}
-    Set Shipping date
 
     # ----- Case Basis -----
     # Select Contract (Total)
