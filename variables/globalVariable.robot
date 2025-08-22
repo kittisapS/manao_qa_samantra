@@ -1,4 +1,15 @@
 *** Variables ***
+# Username list
+# Set 1
+@{usernameSet1}    manaoAutomate_executive01	  manaoAutomate_executive02   manaoAutomate_executive03   manaoAutomate_executive04   manaoAutomate_executive05    manaoAutomate_ceo
+${passwordApproverSet1}    Qa123456
+# Set 2
+@{usernameSet2}    manao_executive01	  manao_executive02   manao_executive03   manao_executive04   manao_executive05    manao_ceo02
+${passwordApproverSet2}    123456
+# Set 3
+@{usernameSet3}    executive-01	  executive-02   executive-03   executive-04   executive-05    ceo-01
+${passwordApproverSet3}    123456
+
 # Key
 ${CTRLA}    CTRL+A
 
