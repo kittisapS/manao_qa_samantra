@@ -11,10 +11,52 @@ Test Teardown    Close All Browsers
 *** Variables ***
 @{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive12   manao_ceo02
 ${passApprover}    123456
-${env}    STG
+${env}    DEV
 ${dataDestination}    Thailand
+@{supplierQty}    100000    20000    30000
+@{supplierPrice}    123.45    223.45    323.45
+@{supplierShipment}    1,9,30,9    2,8,29,8    3,7,28,7
+
 
 *** Keywords ***
+Set New QTY
+    [Arguments]    ${qty}
+    Wait Until Element Is Visible    ${inptAnyNewQTY}
+    Set Focus To Element    ${inptAnyNewQTY}
+    Press Keys    ${inptAnyNewQTY}    ${CTRLA}    ${qty}
+    # Clik another element to enable the save button
+    Click Element    ${inptAnyNewPriceHigh}
+
+Set New Price
+    [Arguments]    ${price}
+    Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+    Set Focus To Element    ${inptAnyNewPriceHigh}
+    Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${price}
+    # Clik another element to enable the save button
+    Click Element    ${inptAnyNewQTY}
+    
+Select New Start Shipment Date
+    [Arguments]    ${day}    ${month} 
+    Wait Until Element Is Visible    ${shipmentStartDateNew}
+    Set Focus To Element    ${shipmentStartDateNew}
+    Click Element    ${shipmentStartDateNew}
+    Wait Until Element Is Visible    ${ddlSelectMonth}
+    Click Element    ${ddlSelectMonth}
+    Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
+
+    Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
+
+Select New End Shipment Date
+    [Arguments]    ${day}    ${month}
+    Wait Until Element Is Visible    ${shipmentEndDateNew}
+    Set Focus To Element    ${shipmentEndDateNew}
+    Click Element    ${shipmentEndDateNew}
+    Wait Until Element Is Visible    ${ddlSelectMonth}
+    Click Element    ${ddlSelectMonth}
+    Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
+
+    Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
+    
 Go to Approval on that request ticket
     [Arguments]    ${env}    ${requestID}
     #Set URL, need to change btw Dev or STG
@@ -135,17 +177,29 @@ Go to tickets and submit comment - Any
 
     # Check which data should be changed
     IF    '${changeItem}' == 'QTY'
-        Wait Until Element Is Visible    ${inptAnyNewQTY}
-        Set Focus To Element    ${inptAnyNewQTY}
-        Press Keys    ${inptAnyNewQTY}    ${CTRLA}    ${item}
-        # Clik another element to enable the save button
-        Click Element    ${inptAnyNewPriceHigh}
+        Set New QTY    ${item}
     ELSE IF    '${changeItem}' == 'Price'
-        Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-        Set Focus To Element    ${inptAnyNewPriceHigh}
-        Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}
-        # Clik another element to enable the save button
-        Click Element    ${inptAnyNewQTY}
+        Set New Price    ${item}
+    ELSE IF    '${changeItem}' == 'Shipment'    #To set item: {dayStart},{monthStart},{dayEnd},{monthEnd}
+        ${splittedDate}=    Split String    ${item}    ,
+        Select New Start Shipment Date    ${splittedDate}[0]    ${splittedDate}[1]
+        Select New End Shipment Date    ${splittedDate}[2]    ${splittedDate}[3]
+    ELSE IF    '${changeItem}' == 'ShipmentEnd'     #To set item: {day},{month}
+        ${splittedDate}=    Split String    ${item}    ,
+        Select New End Shipment Date    ${splittedDate}[0]    ${splittedDate}[1]
+    ELSE IF    '${changeItem}' == 'All'    #To set item: {QTY},{Price},{dayStart},{monthStart},{dayEnd},{monthEnd}
+        ${arg}=    Split String    ${item}    ,
+        ${qty}=    Get From List    ${arg}    0
+        ${price}=    Get From List    ${arg}    1
+        ${dayStart}=    Get From List    ${arg}    2
+        ${monthStart}=    Get From List    ${arg}    3
+        ${dayEnd}=    Get From List    ${arg}    4
+        ${monthEnd}=    Get From List    ${arg}    5
+
+        Set New QTY    ${qty}
+        Set New Price    ${price}
+        Select New Start Shipment Date    ${dayStart}    ${monthStart}
+        Select New End Shipment Date    ${dayEnd}    ${monthEnd}
     END
     
     # Comment
@@ -174,13 +228,13 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Visible    ${loading}    30s
     Wait Until Element Is Not Visible    ${loading}    30s
 
-Create Request Ticket and approve tickets 
-    [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}     ${Amount}    ${price}    ${StartShipmentDate}    ${EndShipmentDate}
+Create Request Ticket and approve tickets
+    [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}    ${arrQty}    ${arrPrice}    ${arrShipment}
     # Go to Create request
     Sleep    1s
     Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel     ${Amount}    ${price}    ${StartShipmentDate}    ${EndShipmentDate}
+    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel    ${arrQty}    ${arrPrice}    ${arrShipment}
     # ${requestID}=    Set Variable    3334
     # Assign index for users list
     ${index}=    Set Variable    0
@@ -231,46 +285,7 @@ Create Request Ticket and approve tickets
     END
 
 
-*** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)    Amount     Price     StartShipment    EndShipment 
+*** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)    arrQty    arrPrice    arrShipment
 # --------- Use these cases to prepare the test data ---------
-Data preparation Flat 1        Any         Flat        QTY        1000           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}    100000    123.45        11            40
-Data preparation Flat 2        Any         Flat        Price        800.758           800.231        780.881        800.758           800.231        780.881    100000    123.45        11            40
-# Data preparation Flat 3        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Flat 4        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Flat 5        Total         Flat        800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Flat 6        Total         Flat        800.758          ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Basis 1        Total         Basis       Purchase           1000           2000        1700        1000           2000        1700
-# Data preparation Basis 2        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Basis 3        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Basis 4        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Basis 5        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-# Data preparation Basis 6        Total         Basis       800.758           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}
-
-# --------- Use these cases to test the price compare logic ---------
-# Case 4-1                Any               Flat        Price             80            80        78.8        70        ${EMPTY}        ${EMPTY}
-# Case 4-2                Any               Basis       Price             100           100           100           100           ${EMPTY}       ${EMPTY}
-# Case 4-3              Any           Basis       Price     100           99            99            99            ${EMPTY}       ${EMPTY}
-# Case 4-4              Any           Flat        Price    100           99            98            98            ${EMPTY}       ${EMPTY} 
-# Case 4-5              Any           Basis       Price           96            ${EMPTY}      97            96            ${EMPTY}       99
-# Case 4-6              Any           Flat        Price    99            99            99            97            ${EMPTY}       98
-# Case 4-7              Any           Basis       Price           165           162           164           165           ${EMPTY}       ${EMPTY}
-# Case 5-1              Any           Flat        Price    285           280           281           281           280            ${EMPTY}
-# Case 5-2              Any           Basis       Price           250           250           245           240           240            ${EMPTY}
-# Case 5-3              Any           Flat        Price    250           250           250           240           240            ${EMPTY}
-# Case 5-4              Any           Basis       Price           99            99            99            95            94             ${EMPTY}
-# Case 5-5              Any           Flat        Price    77.4          77.6          80.5          71.3          70             ${EMPTY}
-# Case 5-6              Any           Basis       Price           68            68            68            ${EMPTY}      57             57
-# Case 5-7              Any           Flat        Price    70            75            72            ${EMPTY}      76             77
-# Case 5-8              Any           Basis       Price           99            98            97            96            95             ${EMPTY}
-# Case 5-9              Any           Flat        Price    50.55         51.39         51.2          50            55             ${EMPTY}
-# Case 5-10             Any           Basis       Price           77            77            77            ${EMPTY}      73             66
-# Case 5-11             Any           Flat        Price    77            77            78            78            ${EMPTY}       74
-# Case 5-12             Any           Basis       Price           165           162           164           165           164            ${EMPTY}
-# Case 5-13             Any           Flat        Price    280           280           280           260           250            ${EMPTY}           
-# Case 6-1              Any           Basis       Price           280           280           240           240           240            240
-# Case 6-2              Any           Flat        Price    250           240           240           210           210            210  
-# Case 6-3              Any           Basis       Price           250           240           240           230           220            210
-# Case 6-4              Any           Flat        Price    270           270           250           240           240            230
-# Case 6-5              Any           Basis       Price           99            99            99            95            94             93
-# Case 6-6              Any           Flat        Price    99            99            97            93            93             93
-# Case 6-7              Any           Basis       Price           888.25            98            97            96            94             94
+Data preparation Flat 1        Any         Flat        All        3000,123.45,1,10,31,10           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}    ${supplierQty}    ${supplierPrice}    ${supplierShipment}
+Data preparation Basis 1        Any         Basis        All        3000,123.45,1,10,31,10           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}    ${supplierQty}    ${supplierPrice}    ${supplierShipment}

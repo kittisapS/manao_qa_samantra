@@ -13,6 +13,9 @@ ${btnAdjustDataSupplier1}    xpath: //supplier-list//div[@class='comp-item-conta
 ${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
 ${inptAnyNewQTY}    xpath: //input[@formcontrolname='quantityNew']
 ${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
+${shipmentStartDateNew}    xpath: //app-date-picker[@id='shipmentStartDateNew']
+${shipmentEndDateNew}    xpath: //app-date-picker[@id='shipmentEndDateNew']
+${ddlSelectMonth}    xpath: //select[@title="Select month"]
 ${btnAnySubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
 
 # Modal Adjust data

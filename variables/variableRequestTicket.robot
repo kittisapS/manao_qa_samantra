@@ -34,6 +34,7 @@ ${ddlSeaFrieght}    xpath: //label[contains(text(),'รูปเเบบกา�
 ${ddlPackage}    xpath: //ng-select[@id='select-master-package']
 ${dateShippingStart}    xpath: //app-date-picker[@id='startDate']
 ${dateShippingEnd}    xpath: //app-date-picker[@placeholder='วันที่สิ้นสุด']
+${ddlSelectMonth}    xpath: //select[@title="Select month"]
 ${ddlContract}    xpath: //ng-select[@id='select-cbot-contract']
 ${inptFlat}    xpath: //input[@id='flatUsd']
 ${inptTrasportFee}    xpath: //input[@id='transportToFactory']
