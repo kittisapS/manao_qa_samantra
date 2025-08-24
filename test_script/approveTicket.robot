@@ -9,8 +9,8 @@ Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
 *** Variables ***
-@{liUsername}    manao_executive01  manao_executive02   manao_executive03   manao_executive04   manao_executive12   manao_ceo02
-${passApprover}    123456
+@{liUsername}=    @{usernameSet2}
+${passwordApprover}=    ${passwordApproverSet2}
 ${env}    DEV
 ${dataDestination}    Thailand
 @{supplierQty}    100000    20000    30000
@@ -271,7 +271,7 @@ Create Request Ticket and approve tickets
         #Log To Console    Current Approver: ${approver}
         IF    '${item}' != '${EMPTY}'
             # Re-login
-            Logout and then login    ${liUsername}[${index}]    ${passApprover}
+            Logout and then login    ${liUsername}[${index}]    ${passwordApprover}
             # Approve with expected user
             IF    '${item}' == '${Reject}'
                 Reject ticket    ${env}    ${requestID}    ${liUsername}[${index}]
