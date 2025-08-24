@@ -11,7 +11,7 @@ ${passwordApproverSet2}    123456
 ${passwordApproverSet3}    123456
 
 # Key
-${CTRLA}    COMMAND+A
+${CTRLA}    CTRL+A
 
 ## ----- Login -----
 ${urlDev}    https://samantra-dev.fitcp.com/
