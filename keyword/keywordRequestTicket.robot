@@ -71,30 +71,24 @@ Set ticket date
 Set Start Shipment Date
     [Arguments]    ${day}    ${month}
     Wait Until Element Is Visible    ${dateShippingStart}
-    Set Focus To Element    ${dateShippingStart}
     Click Element    ${dateShippingStart}
     Wait Until Element Is Visible    ${ddlSelectMonth}
     Click Element    ${ddlSelectMonth}
     Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
-
     Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
 
 Set End Shipment Date
     [Arguments]    ${day}    ${month}
     Wait Until Element Is Visible    ${dateShippingEnd}
-    Set Focus To Element    ${dateShippingEnd}
     Click Element    ${dateShippingEnd}
     Wait Until Element Is Visible    ${ddlSelectMonth}
     ${firstMonth}=    Execute JavaScript    return document.querySelector('select[aria-label="Select month"] option').value;
-    IF    ${firstMonth} != ${month}
-        Click Element    ${ddlSelectMonth}
-        Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
-    END
+    Click Element    ${ddlSelectMonth}
+    Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
     Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
 
 Create new request ticket
     [Arguments]    ${env}    ${ingredient}    ${requestType}    ${contractType}    ${destination}    ${origin}    ${seaFreight}    ${arrQty}    ${arrPrice}    ${arrShipment}
-
     # Create new request
     SeleniumLibrary.Wait Until Element Is Visible    ${btnCreateNewRequest}
     Wait Until Element Is Not Visible   ${loading}

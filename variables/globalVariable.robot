@@ -9,6 +9,9 @@ ${passwordApproverSet2}    123456
 # Set 3
 @{usernameSet3}    executive-01	  executive-02   executive-03   executive-04   executive-05    ceo-01
 ${passwordApproverSet3}    123456
+# Set 4
+@{usernameSet4}    manao_executive01	  manao_executive02   manao_executive03   manao_executive04   manao_executive05    manao_executive13
+${passwordApproverSet4}    123456
 
 # Key
 ${CTRLA}    CTRL+A

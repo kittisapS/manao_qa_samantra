@@ -9,13 +9,14 @@ Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
 *** Variables ***
-@{liUsername}=    @{usernameSet2}
-${passwordApprover}=    ${passwordApproverSet2}
+@{liUsername}=    @{usernameSet4}
+${passwordApprover}=    ${passwordApproverSet4}
 ${env}    DEV
 ${dataDestination}    Thailand
-@{supplierQty}    100000    20000    30000
-@{supplierPrice}    123.45    223.45    323.45
-@{supplierShipment}    1,9,30,9    2,8,29,8    3,7,28,7
+
+@{supplierQty}    100000    #20000    30000
+@{supplierPrice}    123.45    #223.45    323.45
+@{supplierShipment}    1,9,30,9    #2,8,29,8    3,7,28,7
 
 
 *** Keywords ***
@@ -38,23 +39,19 @@ Set New Price
 Select New Start Shipment Date
     [Arguments]    ${day}    ${month} 
     Wait Until Element Is Visible    ${shipmentStartDateNew}
-    Set Focus To Element    ${shipmentStartDateNew}
     Click Element    ${shipmentStartDateNew}
     Wait Until Element Is Visible    ${ddlSelectMonth}
     Click Element    ${ddlSelectMonth}
     Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
-
     Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
 
 Select New End Shipment Date
     [Arguments]    ${day}    ${month}
     Wait Until Element Is Visible    ${shipmentEndDateNew}
-    Set Focus To Element    ${shipmentEndDateNew}
     Click Element    ${shipmentEndDateNew}
     Wait Until Element Is Visible    ${ddlSelectMonth}
     Click Element    ${ddlSelectMonth}
     Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
-
     Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
     
 Go to Approval on that request ticket
@@ -229,7 +226,7 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Not Visible    ${loading}    30s
 
 Create Request Ticket and approve tickets
-    [Arguments]    ${RequestType}    ${ContractType}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}    ${arrQty}    ${arrPrice}    ${arrShipment}
+    [Arguments]    ${RequestType}    ${ContractType}    ${arrQty}    ${arrPrice}    ${arrShipment}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}
     # Go to Create request
     Sleep    1s
     Go to Request Ticket menu
@@ -285,7 +282,9 @@ Create Request Ticket and approve tickets
     END
 
 
-*** Test Cases ***      Request Type        Contract Type         ChangeItem       Item 1       Item 2       Item 3       Item 4       Item 5        Item 6 (CEO)    arrQty    arrPrice    arrShipment
+*** Test Cases ***      Request Type        Contract Type        arrQty        arrPrice        arrShipment         ChangeItem       Item 1                       Item 2                       Item 3                       Item 4                       Item 5                       Item 6 (CEO)
 # --------- Use these cases to prepare the test data ---------
-Data preparation Flat 1        Any         Flat        All        3000,123.45,1,10,31,10           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}    ${supplierQty}    ${supplierPrice}    ${supplierShipment}
-Data preparation Basis 1        Any         Basis        All        3000,123.45,1,10,31,10           ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}        ${EMPTY}    ${supplierQty}    ${supplierPrice}    ${supplierShipment}
+Data preparation Flat 39        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,123.45,1,9,30,9       30000,121.45,1,9,15,9        20000,121.45,1,9,15,10    #Example for E2E Any Case39
+Data preparation Flat 58        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           3000,142.45,1,9,30,9         100000,142.45,1,9,30,9       100000,122.55,1,9,30,9       20000,112.55,1,9,30,9        ${EMPTY}                     ${EMPTY}    #Example for E2E Any Case58
+Data preparation Basis 31       Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,123.45,1,9,30,9       30000,121.45,1,9,15,9        20000,121.45,1,9,15,10    #Example for E2E Any Case31
+Data preparation Basis 1        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action
