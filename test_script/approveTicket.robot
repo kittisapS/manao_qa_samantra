@@ -11,12 +11,12 @@ Test Teardown    Close All Browsers
 *** Variables ***
 @{liUsername}=    @{usernameSet4}
 ${passwordApprover}=    ${passwordApproverSet4}
-${env}    DEV
+${env}    STG
 ${dataDestination}    Thailand
 
-@{supplierQty}    100000    #20000    30000
-@{supplierPrice}    123.45    #223.45    323.45
-@{supplierShipment}    1,9,30,9    #2,8,29,8    3,7,28,7
+@{supplierQty}    100000    100000    #30000
+@{supplierPrice}    123.45    123.45    #323.45
+@{supplierShipment}    1,9,30,9    1,9,30,9    #3,7,28,7
 
 
 *** Keywords ***
@@ -226,7 +226,7 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Not Visible    ${loading}    30s
 
 Create Request Ticket and approve tickets
-    [Arguments]    ${RequestType}    ${ContractType}    ${arrQty}    ${arrPrice}    ${arrShipment}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}
+    [Arguments]    ${RequestType}    ${ContractType}    ${arrQty}    ${arrPrice}    ${arrShipment}    ${changeItem}   ${data1}    ${data2}    ${data3}    ${data4}    ${data5}    ${data6}    
     # Go to Create request
     Sleep    1s
     Go to Request Ticket menu
@@ -268,7 +268,9 @@ Create Request Ticket and approve tickets
         #Log To Console    Current Approver: ${approver}
         IF    '${item}' != '${EMPTY}'
             # Re-login
-            Logout and then login    ${liUsername}[${index}]    ${passwordApprover}
+            SeleniumLibrary.Close All Browsers
+            SeleniumLibrary.Open Browser    ${urlSTG}   ${chrome}
+            Login   ${liUsername}[${index}]    ${passwordApprover}
             # Approve with expected user
             IF    '${item}' == '${Reject}'
                 Reject ticket    ${env}    ${requestID}    ${liUsername}[${index}]
@@ -284,7 +286,49 @@ Create Request Ticket and approve tickets
 
 *** Test Cases ***      Request Type        Contract Type        arrQty        arrPrice        arrShipment         ChangeItem       Item 1                       Item 2                       Item 3                       Item 4                       Item 5                       Item 6 (CEO)
 # --------- Use these cases to prepare the test data ---------
-Data preparation Flat 39        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,123.45,1,9,30,9       30000,121.45,1,9,15,9        20000,121.45,1,9,15,10    #Example for E2E Any Case39
-Data preparation Flat 58        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           3000,142.45,1,9,30,9         100000,142.45,1,9,30,9       100000,122.55,1,9,30,9       20000,112.55,1,9,30,9        ${EMPTY}                     ${EMPTY}    #Example for E2E Any Case58
-Data preparation Basis 31       Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,123.45,1,9,30,9       30000,121.45,1,9,15,9        20000,121.45,1,9,15,10    #Example for E2E Any Case31
-Data preparation Basis 1        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action
+# Data Approve 6/6 Flat 39                Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,123.45,1,9,30,9       30000,121.45,1,9,15,9        20000,121.45,1,9,15,9    #Example for E2E Any Case39
+# Data Approve 5/6 Flat 40                Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,121.45,1,9,30,9       30000,121.45,1,9,15,9        ${EMPTY}                  
+# Data Approve 4/6 Flat 41                Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       20000,121.45,1,9,30,9        ${EMPTY}                     ${EMPTY}
+# Data Approve 6/6 with CEO Flat 42       Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,25,9       100000,112.55,1,9,15,9       30000,102.45,1,9,15,9        100000,132.45,1,9,30,9        #ceo
+# Data Approve 5/6 with CEO Flat 43       Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,25,9       20000,112.55,1,9,15,9        ${EMPTY}                     100000,132.55,1,9,30,9        #ceo                     
+# Data Approve 4/6 with CEO Flat 44       Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,25,9       20000,132.55,1,9,30,9        ${EMPTY}                     ${EMPTY}                     100000,112.55,1,9,30,9        #ceo                     
+# Data Approve from CEO 6/6 Flat 45       Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,130.55,1,9,15,9        30000,102.45,1,9,15,9        30000,102.45,1,9,15,9
+# Data CEO 6/6 Flat 46                    Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        20000,122.34,1,9,15,9
+# Data Resubmit 6/6 Flat 54               Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       30000,123.45,1,9,30,9        20000,122.55,1,9,30,9        100000,121.45,1,9,30,9       100000,121.45,1,9,30,9        
+Data Resubmit 5/6 Flat 55               Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       30000,122.45,1,9,30,9        20000,120.45,1,9,30,9        100000,120.45,1,9,30,9       ${EMPTY}
+Data Resubmit 4/6 Flat 56               Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       30000,122.45,1,9,30,9        100000,120.45,1,9,30,9       ${EMPTY}                     ${EMPTY}
+# Data Resubmit 6/6 with CEO Flat 47      Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       20000,122.55,1,9,30,9        30000,102.45,1,9,15,9        100000,102.45,1,9,30,9    #ceo
+# Data Resubmit 5/6 with CEO Flat 48      Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,25,9       100000,122.55,1,9,30,9       20000,112.55,1,9,15,9        ${EMPTY}                     100000,102.45,1,9,30,9    #ceo    
+# Data Resubmit 4/6 with CEO Flat 49      Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,25,9       100000,122.55,1,9,30,9       ${EMPTY}                     ${EMPTY}                     100000,102.45,1,9,30,9    #ceo
+# Data Resubmit from CEO 6/6 Flat 60      Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        30000,122.34,1,9,15,9
+# Data Reject 6/6 with CEO Flat 65        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        20000,102.45,1,9,15,9    #ceo
+# Data Reject 5/6 with CEO Flat 66        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        ${EMPTY}                     20000,102.45,1,9,15,9    #ceo
+# Data Reject 4/6 with CEO Flat 67        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       ${EMPTY}                     ${EMPTY}                     20000,102.45,1,9,15,9    #ceo
+# Data Reject from CEO 6/6 Flat 68        Any    Flat    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        20000,122.34,1,9,15,9
+
+# Basis
+# Data Approve 6/6 Basis 39                Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,123.45,1,9,30,9       30000,121.45,1,9,15,9        20000,121.45,1,9,15,9    #Example for E2E Any Case39
+# Data Approve 5/6 Basis 40                Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       100000,121.45,1,9,30,9       30000,121.45,1,9,15,9        ${EMPTY}                  
+# Data Approve 4/6 Basis 41                Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,123.45,1,9,30,9       20000,121.45,1,9,30,9        ${EMPTY}                     ${EMPTY}
+# Data Approve 6/6 with CEO Basis 42       Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,25,9       100000,112.55,1,9,15,9       30000,102.45,1,9,15,9        100000,132.45,1,9,30,9        #ceo
+# Data Approve 5/6 with CEO Basis 43       Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,25,9       20000,112.55,1,9,15,9        ${EMPTY}                     100000,132.55,1,9,30,9        #ceo                     
+# Data Approve 4/6 with CEO Basis 44       Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,25,9       20000,132.55,1,9,30,9        ${EMPTY}                     ${EMPTY}                     100000,112.55,1,9,30,9        #ceo                     
+# Data Approve from CEO 6/6 Basis 45       Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,130.55,1,9,15,9        30000,102.45,1,9,15,9        30000,102.45,1,9,15,9
+# Data CEO 6/6 Basis 46                    Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        20000,122.34,1,9,15,9
+# Data Resubmit 6/6 Basis 54               Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       30000,123.45,1,9,30,9        20000,122.55,1,9,30,9        100000,121.45,1,9,30,9       100000,121.45,1,9,30,9        
+# Data Resubmit 5/6 Basis 55               Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       30000,122.45,1,9,30,9        20000,120.45,1,9,30,9        100000,120.45,1,9,30,9       ${EMPTY}
+# Data Resubmit 4/6 Basis 56               Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       30000,122.45,1,9,30,9        100000,120.45,1,9,30,9       ${EMPTY}                     ${EMPTY}
+# Data Resubmit 6/6 with CEO Basis 47      Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       20000,122.55,1,9,30,9        30000,102.45,1,9,15,9        100000,102.45,1,9,30,9    #ceo
+# Data Resubmit 5/6 with CEO Basis 48      Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,25,9       100000,122.55,1,9,30,9       20000,112.55,1,9,15,9        ${EMPTY}                     100000,102.45,1,9,30,9    #ceo    
+# Data Resubmit 4/6 with CEO Basis 49      Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,25,9       100000,122.55,1,9,30,9       ${EMPTY}                     ${EMPTY}                     100000,102.45,1,9,30,9    #ceo
+# Data Resubmit from CEO 6/6 Basis 60      Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           100000,142.45,1,9,30,9       100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        30000,122.34,1,9,15,9
+# Data Reject 6/6 with CEO Basis 65        Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        20000,102.45,1,9,15,9    #ceo
+# Data Reject 5/6 with CEO Basis 66        Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        ${EMPTY}                     20000,102.45,1,9,15,9    #ceo
+# Data Reject 4/6 with CEO Basis 67        Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       ${EMPTY}                     ${EMPTY}                     20000,102.45,1,9,15,9    #ceo
+# Data Reject from CEO 6/6 Basis 68        Any    Basis    ${supplierQty}    ${supplierPrice}    ${supplierShipment}      All           30000,142.45,1,9,30,9        100000,142.45,1,9,30,9       100000,132.55,1,9,30,9       30000,112.55,1,9,15,9        30000,102.45,1,9,15,9        20000,122.34,1,9,15,9
+
+# Data preparation Basis 1        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action
+# Data preparation Basis 2        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action
+# Data preparation Basis 3        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action
+# Data preparation Basis 4        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action
+# Data preparation Basis 5        Any    Basis   ${supplierQty}    ${supplierPrice}    ${supplierShipment}              All           ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}                     ${EMPTY}    #Example for Create Any, no approve action

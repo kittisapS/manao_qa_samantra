@@ -54,6 +54,20 @@ Logout and then login
     Wait Until Element Is Visible    ${toastLoginSuccess}    10s
     Click Element    ${toastLoginSuccess}
     Wait Until Element Is Not Visible    ${toastLoginSuccess}    10s
+
+
+
+Login
+    [Arguments]    ${newUsername}    ${newPassword}
+    SeleniumLibrary.Wait Until Element Is Visible    ${inptUsername}    30s
+    SeleniumLibrary.Input Text    ${inptUsername}    ${newUsername}
+    SeleniumLibrary.Input Text    ${inptPassword}    ${newPassword}
+    SeleniumLibrary.Click Element    ${btnLogin}
+    SeleniumLibrary.Wait Until Element Is Visible    ${h2Welcome}    30s
+    Wait Until Element Is Visible    ${toastLoginSuccess}    10s
+    Click Element    ${toastLoginSuccess}
+    Wait Until Element Is Not Visible    ${toastLoginSuccess}    10s
+    
  
 Go to Request Ticket menu
     BuiltIn.Wait Until Keyword Succeeds    10    1s    SeleniumLibrary.Click Element    ${menuInterTrade}
