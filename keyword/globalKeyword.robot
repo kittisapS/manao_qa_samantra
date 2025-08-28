@@ -58,7 +58,15 @@ Logout and then login
 
 
 Login
-    [Arguments]    ${newUsername}    ${newPassword}
+    [Arguments]    ${env}    ${browser}    ${newUsername}    ${newPassword}
+    IF    '${env}' == 'DEV'    
+        SeleniumLibrary.Open Browser    ${urlDev}   ${browser}
+    ELSE IF    '${env}' == 'STG'    
+        SeleniumLibrary.Open Browser    ${urlSTG}   ${browser}
+    ELSE
+        Log To Console    Please specify correct environment (DEV or STG).
+        Close All Browsers
+    END
     SeleniumLibrary.Wait Until Element Is Visible    ${inptUsername}    30s
     SeleniumLibrary.Input Text    ${inptUsername}    ${newUsername}
     SeleniumLibrary.Input Text    ${inptPassword}    ${newPassword}

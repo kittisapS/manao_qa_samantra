@@ -75,7 +75,11 @@ Set Start Shipment Date
     Wait Until Element Is Visible    ${ddlSelectMonth}
     Click Element    ${ddlSelectMonth}
     Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
-    Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
+    IF    ${day} < 15
+        Click Element    xpath=(//div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"])[1]
+    ELSE
+        Click Element    xpath=(//div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"])[last()]
+    END
 
 Set End Shipment Date
     [Arguments]    ${day}    ${month}
@@ -85,7 +89,11 @@ Set End Shipment Date
     ${firstMonth}=    Execute JavaScript    return document.querySelector('select[aria-label="Select month"] option').value;
     Click Element    ${ddlSelectMonth}
     Click Element    xpath: //select[@aria-label="Select month"]/option[@value="${month}"]
-    Click Element    xpath: //div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"]
+    IF    ${day} < 15
+        Click Element    xpath=(//div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"])[1]
+    ELSE
+        Click Element    xpath=(//div[@role="gridcell"]/div[contains(@class,"custom-day") and not(contains(@class,"text-muted")) and normalize-space(text())="${day}"])[last()]
+    END
 
 Create new request ticket
     [Arguments]    ${env}    ${ingredient}    ${requestType}    ${contractType}    ${destination}    ${origin}    ${seaFreight}    ${arrQty}    ${arrPrice}    ${arrShipment}

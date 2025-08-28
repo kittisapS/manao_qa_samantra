@@ -269,8 +269,7 @@ Create Request Ticket and approve tickets
         IF    '${item}' != '${EMPTY}'
             # Re-login
             SeleniumLibrary.Close All Browsers
-            SeleniumLibrary.Open Browser    ${urlSTG}   ${chrome}
-            Login   ${liUsername}[${index}]    ${passwordApprover}
+            Login   ${env}    ${chrome}    ${usernames}[${index}]    ${password}
             # Approve with expected user
             IF    '${item}' == '${Reject}'
                 Reject ticket    ${env}    ${requestID}    ${liUsername}[${index}]
