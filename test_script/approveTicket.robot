@@ -9,10 +9,13 @@ Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
 *** Variables ***
-@{liUsername}=    @{usernameSet2}
-${passwordApprover}=    ${passwordApproverSet2}
+@{liUsername}=    @{usernameSet1}
+${passwordApprover}=    ${passwordApproverSet1}
 ${env}    STG
+${productShortName}    SBM
 ${dataDestination}    Thailand
+${dataOrigin}    BRA
+${dataSeaFreight}    Conventional Vessel
 
 *** Keywords ***
 Go to Approval on that request ticket
@@ -168,8 +171,8 @@ Create Request Ticket and approve tickets
     Sleep    1s
     Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    ${env}    SBM    ${RequestType}    ${ContractType}    ${dataDestination}    BRA    Conventional Vessel
-    # ${requestID}=    Set Variable    3334
+    ${requestID}=     Create new request ticket    ${env}    ${productShortName}    ${RequestType}    ${ContractType}    ${dataDestination}    ${dataOrigin}    ${dataSeaFreight}
+    # ${requestID}=    Set Variable    1882
     # Assign index for users list
     ${index}=    Set Variable    0
     # Assign price to list

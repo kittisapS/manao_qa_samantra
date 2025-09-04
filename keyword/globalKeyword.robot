@@ -57,7 +57,7 @@ Logout and then login
 Go to Request Ticket menu
     BuiltIn.Wait Until Keyword Succeeds    10    1s    SeleniumLibrary.Click Element    ${menuInterTrade}
     SeleniumLibrary.Wait Until Element Is Visible    ${subMenuRequestTicket}    30s
-    SeleniumLibrary.Click Element    ${subMenuRequestTicket}
+    BuiltIn.Wait Until Keyword Succeeds    10    1s     SeleniumLibrary.Click Element    ${subMenuRequestTicket}
     SeleniumLibrary.Wait Until Element Is Visible    ${h2RequestTicket}    30s
     SeleniumLibrary.Wait Until Element Is Visible    ${loading}    30s
     SeleniumLibrary.Wait Until Element Is Not Visible    ${loading}    30s
