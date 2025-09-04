@@ -4,7 +4,7 @@ Library    Collections
 Resource    ../keyword/globalKeyword.robot
 Resource    ../keyword/keywordRequestTicket.robot
 Resource    ../keyword/keywordApproveTicket.robot
-Test Setup    Open Samantra and login    ${env}    ${chrome}    Manao_peepo    Manao100%
+Test Setup    Open Samantra and login    ${env}    ${chrome}    ${EMPTY}    ${EMPTY}
 Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
@@ -18,12 +18,12 @@ ${dataSeaFreight}    Conventional Vessel
 # Data Set for approver, please following these sample
 # assigned list        Username                     Password    Select Supplier    Purchase      Price        Shipment start        Shipment end        isReject          isDataChange
 #                                                               (1-4)             (Numeric)     (Numeric)     (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
-@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    4                    2000        3813.24        15                25                 ${True}            ${False}
-@{dataApprovalSetCEO}  manaoAutomate_ceo            Qa123456    ${EMPTY}            ${EMPTY}     ${EMPTY}     ${EMPTY}      ${EMPTY}               ${False}              ${False}
+@{dataApprovalSet1}    executive-01                123456        4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet2}    executive-02                123456        4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet3}    executive-03                123456        4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet4}    executive-04                123456        4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet5}    executive-05                123456        4                    2000        3813.24        15                25                 ${True}            ${False}
+@{dataApprovalSetCEO}  ceo-01                      123456        ${EMPTY}            ${EMPTY}     ${EMPTY}     ${EMPTY}      ${EMPTY}               ${False}              ${False}
 
 *** Keywords ***
 Go to tickets and submit comment - Total
