@@ -16,14 +16,14 @@ ${dataOrigin}    BRA
 ${dataSeaFreight}    Conventional Vessel
 
 # Data Set for approver, please following these sample
-# assigned list        Username                     Password    Deselect Supplier    Purchase    Price     Shipment start    Shipment end        isReject
-#                                                               (1-3)                (Numeric)   (Numeric)   (Should be 02-30)     (Cannot be 30)      (True/False)
-@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    1                    3000        3000.25        15                25                 ${False}
-@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    2                    2000        1750.75        02              ${EMPTY}              ${False}
-@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    3                    1000        2578.32        15                25                 ${False}
-@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    ${EMPTY}             2000        1750        ${EMPTY}          18                ${False}
-@{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    ${EMPTY}             2000        3813.24        15                25                 ${False}
-@{dataApprovalSetCEO}  manaoAutomate_ceo            Qa123456    ${EMPTY}    ${EMPTY}    ${EMPTY}      ${EMPTY}               ${True}
+# assigned list        Username                     Password    Deselect Supplier    Purchase    Price     Shipment start    Shipment end        isReject                isDataChange
+#                                                               (1-3)                (Numeric)   (Numeric)   (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
+@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    1                    3000        3000.25        15                25                 ${False}            ${True}
+@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    2                    2000        1750.75        02              ${EMPTY}              ${False}           ${True}
+@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    3                    1000        2578.32        15                25                 ${False}            ${True}
+@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    ${EMPTY}             2000        1750        ${EMPTY}          18                ${False}                ${True}
+@{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    ${EMPTY}             2000        3813.24        15                25                 ${False}            ${True}
+@{dataApprovalSetCEO}  manaoAutomate_ceo            Qa123456    ${EMPTY}            ${EMPTY}     ${EMPTY}     ${EMPTY}      ${EMPTY}               ${False}              ${False}
 
 *** Keywords ***
 Go to tickets and submit comment - Total
@@ -62,47 +62,47 @@ Go to tickets and submit comment - Total
         ELSE
             Log To Console    No changed to suppliers or the value is incorrectly inputted (please input 1-3)
         END
-        # Click ปรับข้อมูล
-        SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustData}    30s
-        SeleniumLibrary.Set Focus To Element    ${btnAdjustData}
-        SeleniumLibrary.Click Element    ${btnAdjustData}
-        SeleniumLibrary.Wait Until Element Is Visible    ${h4AdjustData}
-        # --- Adjust data in the ปรับข้อมูล ---
-        # Check which data should be changed
-        # Change the Purchase target
-        IF    '${item}[3]' != '${EMPTY}'
-            SeleniumLibrary.Wait Until Element Is Visible    ${inptPurchaseTarget}
-            SeleniumLibrary.Set Focus To Element    ${inptPurchaseTarget}
-            Press Keys    ${inptPurchaseTarget}    ${CTRLA}    ${item}[3]
-            Sleep    0.5s
-            # Clik another element to enable the save button
-            Click Element    ${inptAdjustPrice}
+        # Check if an approver is going to change data
+        IF        '${item}[8]' == '${True}'
+            # Click ปรับข้อมูล
+            SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustData}    30s
+            SeleniumLibrary.Set Focus To Element    ${btnAdjustData}
+            SeleniumLibrary.Click Element    ${btnAdjustData}
+            SeleniumLibrary.Wait Until Element Is Visible    ${h4AdjustData}
+            # --- Adjust data in the ปรับข้อมูล ---
+            # Check which data should be changed
+            # Change the Purchase target
+            IF    '${item}[3]' != '${EMPTY}'
+                SeleniumLibrary.Wait Until Element Is Visible    ${inptPurchaseTarget}
+                SeleniumLibrary.Set Focus To Element    ${inptPurchaseTarget}
+                Press Keys    ${inptPurchaseTarget}    ${CTRLA}    ${item}[3]
+                Sleep    0.5s
+                # Clik another element to enable the save button
+                Click Element    ${inptAdjustPrice}
+            END
+            # Change the Price
+            IF    '${item}[4]' != '${EMPTY}'
+                SeleniumLibrary.Wait Until Element Is Visible    ${inptAdjustPrice}
+                SeleniumLibrary.Set Focus To Element    ${inptAdjustPrice}
+                Press Keys    ${inptAdjustPrice}    ${CTRLA}    ${item}[4]
+                Sleep    0.5s
+                # Clik another element to enable the save button
+                SeleniumLibrary.Click Element    ${inptPurchaseTarget}
+            END
+            # Change the Shipment Start
+            IF    '${item}[5]' != '${EMPTY}'
+                Set new shipping date    start    ${item}[5]
+            END
+            # Change the Shipment End
+            IF    '${item}[6]' != '${EMPTY}'
+                Set new shipping date    end    ${item}[6]
+            END
+            SeleniumLibrary.Element Should Be Enabled    ${btnSave}
+            # Click Save button to confirm change
+            SeleniumLibrary.Click Element    ${btnSave}
+            SeleniumLibrary.Wait Until Element Is Visible    ${txtEditedSuccess}    30s
+            SeleniumLibrary.Wait Until Element Is Not Visible    ${txtEditedSuccess}    30s
         END
-        # Change the Price
-        IF    '${item}[4]' != '${EMPTY}'
-            SeleniumLibrary.Wait Until Element Is Visible    ${inptAdjustPrice}
-            SeleniumLibrary.Set Focus To Element    ${inptAdjustPrice}
-            Press Keys    ${inptAdjustPrice}    ${CTRLA}    ${item}[4]
-            Sleep    0.5s
-            # Clik another element to enable the save button
-            SeleniumLibrary.Click Element    ${inptPurchaseTarget}
-        END
-        # Change the Shipment Start
-        IF    '${item}[5]' != '${EMPTY}'
-            Set new shipping date    start    ${item}[5]
-        END
-        # Change the Shipment End
-        IF    '${item}[6]' != '${EMPTY}'
-            Set new shipping date    end    ${item}[6]
-        END
-        # Check if the ticket should be rejected
-
-        SeleniumLibrary.Element Should Be Enabled    ${btnSave}
-        # Click Save button to confirm change
-        SeleniumLibrary.Click Element    ${btnSave}
-        SeleniumLibrary.Wait Until Element Is Visible    ${txtEditedSuccess}    30s
-        SeleniumLibrary.Wait Until Element Is Not Visible    ${txtEditedSuccess}    30s
-
         # Comment
         SeleniumLibrary.Set Focus To Element    ${inptComment}
         SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
@@ -186,7 +186,7 @@ Create Request Ticket and approve tickets
     ${index}=    Set Variable    0
     IF    '${isApproval}' == '${True}'
     # Add all data set into one matrix
-    ${dataMatrix}=    Create List    ${dataApprovalSet1}    ${dataApprovalSet2}    ${dataApprovalSet3}    ${dataApprovalSet4}    ${dataApprovalSet5}
+    ${dataMatrix}=    Create List    ${dataApprovalSet1}    ${dataApprovalSet2}    ${dataApprovalSet3}    ${dataApprovalSet4}    ${dataApprovalSet5}    ${dataApprovalSetCEO}
         FOR    ${dataSet}    IN    @{dataMatrix}
             # Log To Console    Data Matrix: ${dataMatrix}
             # Log To Console    Data Set: ${dataSet}

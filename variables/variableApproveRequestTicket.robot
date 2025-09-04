@@ -13,6 +13,9 @@ ${chkTotalSupplier4}    xpath: //supplier-list/div/div[4]//mat-checkbox
 # ----- Any -----
 # Supplier table
 ${chkAnySupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][1]//mat-checkbox
+${chkAnySupplier2}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][2]//mat-checkbox
+${chkAnySupplier3}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][3]//mat-checkbox
+${chkAnySupplier4}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][4]//mat-checkbox
 ${btnAdjustDataSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][1]//button[contains(text(),'ปรับข้อมูล')]
 ${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
 ${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
