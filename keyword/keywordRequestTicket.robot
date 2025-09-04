@@ -264,6 +264,16 @@ Create new request ticket
     # Save supplier
     SeleniumLibrary.Click Element    ${btnSave}
 
+    # Select recommended
+    # Select 1st supplier to be recommended
+    Wait Until Element Is Visible    ${chkTraderSupplier1}
+    Set Focus To Element    ${chkTraderSupplier1}
+    Click Element    ${chkTraderSupplier1}
+    # Select 2nd supplier to be recommended
+    Wait Until Element Is Visible    ${chkTraderSupplier2}
+    Set Focus To Element    ${chkTraderSupplier2}
+    Click Element    ${chkTraderSupplier2}
+
     # Input topic
     Set Focus To Element     ${inptTopic}
     Input Text    ${inptTopic}    Test001

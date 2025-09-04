@@ -19,6 +19,7 @@ ${liLocalCurrency}    xpath: //ng-dropdown-panel//div/span[text()='Local Currenc
 ${ddlLocalCurrency}    xpath: //ng-select[@id='localCurrency']
 ${inptExchanageRate}    xpath: //input[@id='exchangeRate']
 
+
 # ----- 2nd Criteria (supplier) -----
 ${btnAddSupplier}    xpath: //button[text()='เพิ่มรายชื่อคู่ค้า ']
 ${txtSupplierFlat}    xpath: //span[contains(text(),'เพิ่มรายการเสนอราคาคู่ค้า')]
@@ -47,6 +48,11 @@ ${btnConfirm}    xpath: //button[text()='ยืนยัน']
 ${btnSaveDraft}    xpath: //button[text()=' บันทึกร่าง ']
 ${btnSubmitRequest}    xpath: //button[text()=' ส่งคำขออนุมัติ ']
 
+# ----- Checkboxes -----
+${chkTraderSupplier1}    xpath: //app-partner-comparator-list//div[contains(@style,'order:')][2]//input[@type='checkbox']
+${chkTraderSupplier2}    xpath: //app-partner-comparator-list//div[contains(@style,'order:')][3]//input[@type='checkbox']
+${chkTraderSupplier3}    xpath: //app-partner-comparator-list//div[contains(@style,'order:')][4]//input[@type='checkbox']
+${chkTraderSupplier4}    xpath: //app-partner-comparator-list//div[contains(@style,'order:')][5]//input[@type='checkbox']
 
 # ----- After saving -----
 ${hRequestNo}    xpath: //h4[contains(text(),'เลขที่คำขอจัดซื้อ')]
