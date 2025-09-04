@@ -127,8 +127,8 @@ Go to tickets and submit comment - Any
     Wait Until Element Is Visible    ${loading}    30s
     Wait Until Element Is Not Visible    ${loading}    30s
     # Select 1st checkbox
-    Wait Until Element Is Visible    ${chkSupplier1}    30s
-    Click Element    ${chkSupplier1}
+    Wait Until Element Is Visible    ${chkAnySupplier1}    30s
+    Click Element    ${chkAnySupplier1}
     # Click ปรับข้อมูล
     Wait Until Element Is Visible    ${btnAdjustDataSupplier1}    30s
     Set Focus To Element    ${btnAdjustDataSupplier1}

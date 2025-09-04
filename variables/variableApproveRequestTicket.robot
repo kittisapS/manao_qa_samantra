@@ -5,10 +5,14 @@ ${h2TicketApproval}    xpath: //h2[contains(text(),'รายละเอีย�
 
 # ----- Total -----
 ${btnAdjustData}    xpath: //button[contains(text(),'ปรับข้อมูล')]
+${chkTotalSupplier1}    xpath: //supplier-list/div/div[1]//mat-checkbox
+${chkTotalSupplier2}    xpath: //supplier-list/div/div[2]//mat-checkbox
+${chkTotalSupplier3}    xpath: //supplier-list/div/div[3]//mat-checkbox
+${chkTotalSupplier4}    xpath: //supplier-list/div/div[4]//mat-checkbox
 
 # ----- Any -----
 # Supplier table
-${chkSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][1]//mat-checkbox
+${chkAnySupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][1]//mat-checkbox
 ${btnAdjustDataSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][1]//button[contains(text(),'ปรับข้อมูล')]
 ${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
 ${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
