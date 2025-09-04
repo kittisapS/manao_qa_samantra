@@ -16,13 +16,13 @@ ${dataOrigin}    BRA
 ${dataSeaFreight}    Conventional Vessel
 
 # Data Set for approver, please following these sample
-# assigned list        Username                     Password    Deselect Supplier    Purchase    Price     Shipment start         Shipment end        isReject           isDataChange
-#                                                               (1-3)                (Numeric)   (Numeric)   (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
-@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    2                    2000        800.75        ${EMPTY}              ${EMPTY}           ${False}            ${True}
-@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    2                    2000        800.75        ${EMPTY}              ${EMPTY}           ${False}           ${True}
-@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    1                    2000        900.32        ${EMPTY}              ${EMPTY}           ${False}            ${True}
-@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    1                    2000        900.32        ${EMPTY}              ${EMPTY}           ${False}                ${True}
-@{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    ${EMPTY}             2000        3813.24        15                25                 ${False}            ${True}
+# assigned list        Username                     Password    Select Supplier    Purchase      Price        Shipment start        Shipment end        isReject          isDataChange
+#                                                               (1-4)             (Numeric)     (Numeric)     (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
+@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    4                    2000        3813.24        15                25                 ${True}            ${False}
 @{dataApprovalSetCEO}  manaoAutomate_ceo            Qa123456    ${EMPTY}            ${EMPTY}     ${EMPTY}     ${EMPTY}      ${EMPTY}               ${False}              ${False}
 
 *** Keywords ***
@@ -35,30 +35,31 @@ Go to tickets and submit comment - Total
     # Check if the ticket should be adjusted
     IF    '${item}[7]' == '${False}'
         # Check if the suppliers is going to be deselected
-        SeleniumLibrary.Wait Until Element Is Visible    ${chkTotalSupplier1}
-        # If 1 supplier is not selected
+        SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier1}
+        # If 1 supplier should not be selected
         IF    '${item}[2]' == '1'  
-            # Deselect supplier 4th        
-            SeleniumLibrary.Set Focus To Element    ${chkTotalSupplier4}
-            SeleniumLibrary.Click Element    ${chkTotalSupplier4}
-        # If 2 suppliers are not selected
+            # Deselect supplier 4th
+            SeleniumLibrary.Set Focus To Element    ${chkSupplier4}
+            SeleniumLibrary.Click Element    ${chkSupplier4}
+            # Deselect supplier 3rd
+            SeleniumLibrary.Set Focus To Element    ${chkSupplier3}
+            SeleniumLibrary.Click Element    ${chkSupplier3}
+            # Deselect supplier 2nd
+            SeleniumLibrary.Set Focus To Element    ${chkSupplier2}
+            SeleniumLibrary.Click Element    ${chkSupplier2}
+        # If 2 suppliers should not be selected
         ELSE IF    '${item}[2]' == '2'
             # Deselect supplier 4th
-            SeleniumLibrary.Set Focus To Element    ${chkTotalSupplier4}
-            SeleniumLibrary.Click Element    ${chkTotalSupplier4}
+            SeleniumLibrary.Set Focus To Element    ${chkSupplier4}
+            SeleniumLibrary.Click Element    ${chkSupplier4}
             # Deselect supplier 3rd
-            SeleniumLibrary.Set Focus To Element    ${chkTotalSupplier3}
-            SeleniumLibrary.Click Element    ${chkTotalSupplier3}
+            SeleniumLibrary.Set Focus To Element    ${chkSupplier3}
+            SeleniumLibrary.Click Element    ${chkSupplier3}
+        # If 3 suppliers should not be selected
         ELSE IF    '${item}[2]' == '3'
             # Deselect supplier 4th
-            SeleniumLibrary.Set Focus To Element    ${chkTotalSupplier4}
-            SeleniumLibrary.Click Element    ${chkTotalSupplier4}
-            # Deselect supplier 3rd
-            SeleniumLibrary.Set Focus To Element    ${chkTotalSupplier3}
-            SeleniumLibrary.Click Element    ${chkTotalSupplier3}
-            # Deselect supplier 2nd
-            SeleniumLibrary.Set Focus To Element    ${chkTotalSupplier2}
-            SeleniumLibrary.Click Element    ${chkTotalSupplier2}
+            SeleniumLibrary.Set Focus To Element    ${chkSupplier4}
+            SeleniumLibrary.Click Element    ${chkSupplier4}
         ELSE
             Log To Console    No changed to suppliers or the value is incorrectly inputted (please input 1-3)
         END
@@ -91,11 +92,11 @@ Go to tickets and submit comment - Total
             END
             # Change the Shipment Start
             IF    '${item}[5]' != '${EMPTY}'
-                Set new shipping date    start    ${item}[5]
+                Set new shipping date total    start    ${item}[5]
             END
             # Change the Shipment End
             IF    '${item}[6]' != '${EMPTY}'
-                Set new shipping date    end    ${item}[6]
+                Set new shipping date total    end    ${item}[6]
             END
             SeleniumLibrary.Element Should Be Enabled    ${btnSave}
             # Click Save button to confirm change
@@ -134,71 +135,207 @@ Go to tickets and submit comment - Any
     Go to Approval on that request ticket    ${env}    ${requestID}
     Wait Until Element Is Visible    ${loading}    30s
     Wait Until Element Is Not Visible    ${loading}    30s
-    # Check if the ticket should be adjusted
+    # Check if the ticket should be adjusted or rejected
     IF    '${item}[7]' == '${False}'
         # Check if the suppliers is going to be deselected
-        SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}
+        SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier1}
         # If 1 supplier is selected
         IF    '${item}[2]' == '1'  
             # Select 1st checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier1}
         # If 2 suppliers are selected
         ELSE IF    '${item}[2]' == '2'
             # Select 1st checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier1}
             # Select 2nd checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier2}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier2}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier2}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier2}
         # If 3 suppliers are selected
         ELSE IF    '${item}[2]' == '3'
             # Select 1st checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier1}
             # Select 2nd checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier2}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier2}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier2}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier2}
             # Select 3rd checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier3}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier3}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier3}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier3}
         # If 4 suppliers are selected
         ELSE IF    '${item}[2]' == '4'
             # Select 1st checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier1}
             # Select 2nd checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier2}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier2}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier2}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier2}
             # Select 3rd checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier3}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier3}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier3}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier3}
             # Select 4th checkbox
-            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier4}    30s
-            SeleniumLibrary.Click Element    ${chkAnySupplier4}
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkSupplier4}    30s
+            SeleniumLibrary.Click Element    ${chkSupplier4}
         ELSE
             Log To Console    No changed to suppliers or the value is incorrectly inputted (please input 1-4)
         END
+        # Check if a user would like to adjust data
+        IF    '${item}[8]' == '${True}'
+            # Check if the 1st checkbox is checked
+            IF    ${item}[2] >= 1 and ${item}[2] > 0
+                # Check if the 2nd checkbox is checked
+                IF    ${item}[2] >= 2
+                    # Check if the 3th checkbox is checked
+                    IF    ${item}[2] >= 3
+                        # Check if the 4th checkbox is checked
+                        IF    ${item}[2] >= 4 
+                            # Click ปรับข้อมูล of 4th supplier
+                            SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier4}    30s
+                            SeleniumLibrary.Set Focus To Element    ${btnAdjustDataSupplier4}
+                            SeleniumLibrary.Click Element    ${btnAdjustDataSupplier4}
+                            SeleniumLibrary.Wait Until Element Is Visible    ${txtAnyAdjustPrice}
+                            # Check if ปริมาณ should be adjusted
+                            IF    '${item}[3]' != '${EMPTY}'
+                                # Adjust ปริมาณ
+                                SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
+                                SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                                SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                            END
+                            # Check if ราคา should be adjusted
+                            IF    '${item}[4]' != '${EMPTY}'
+                                # Adjust ปริมาณ
+                                SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+                                SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
+                                SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                            END
+                            # Check if Shipment start should be adjusted
+                            IF    '${item}[5]' != '${EMPTY}'
+                                Set new shipping date any    start    ${item}[5]
+                            END
+                            # Check if Shipment end should be adjusted
+                            IF    '${item}[6]' != '${EMPTY}'
+                                Set new shipping date any    end    ${item}[6]
+                            END
+                                        # Comment
+                            SeleniumLibrary.Set Focus To Element    ${inptComment}
+                            SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
+                            # Click Save button to confirm change
+                            SeleniumLibrary.Element Should Be Enabled    ${btnSave}
+                            SeleniumLibrary.Click Element    ${btnSave}
+                            SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
+                            SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                        END
+                        # Click ปรับข้อมูล of 3rd supplier
+                        SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier3}    30s
+                        SeleniumLibrary.Set Focus To Element    ${btnAdjustDataSupplier3}
+                        SeleniumLibrary.Click Element    ${btnAdjustDataSupplier3}
+                        SeleniumLibrary.Wait Until Element Is Visible    ${txtAnyAdjustPrice}
+                        # Check if ปริมาณ should be adjusted
+                        IF    '${item}[3]' != '${EMPTY}'
+                            # Adjust ปริมาณ
+                            SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
+                            SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                            SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                        END
+                        # Check if ราคา should be adjusted
+                        IF    '${item}[4]' != '${EMPTY}'
+                            # Adjust ปริมาณ
+                            SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+                            SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
+                            SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                        END
+                        # Check if Shipment start should be adjusted
+                        IF    '${item}[5]' != '${EMPTY}'
+                            Set new shipping date any    start    ${item}[5]
+                        END
+                        # Check if Shipment end should be adjusted
+                        IF    '${item}[6]' != '${EMPTY}'
+                            Set new shipping date any    end    ${item}[6]
+                        END
+                        # Comment
+                        SeleniumLibrary.Set Focus To Element    ${inptComment}
+                        SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
+                        # Click Save button to confirm change
+                        SeleniumLibrary.Element Should Be Enabled    ${btnSave}
+                        SeleniumLibrary.Click Element    ${btnSave}
+                        SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
+                        SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                    END
+                    # Click ปรับข้อมูล of 3rd supplier
+                    SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier2}    30s
+                    SeleniumLibrary.Set Focus To Element    ${btnAdjustDataSupplier2}
+                    SeleniumLibrary.Click Element    ${btnAdjustDataSupplier2}
+                    SeleniumLibrary.Wait Until Element Is Visible    ${txtAnyAdjustPrice}
+                    # Check if ปริมาณ should be adjusted
+                    IF    '${item}[3]' != '${EMPTY}'
+                        # Adjust ปริมาณ
+                        SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
+                        SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                        SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                    END
+                    # Check if ราคา should be adjusted
+                    IF    '${item}[4]' != '${EMPTY}'
+                        # Adjust ปริมาณ
+                        SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+                        SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
+                        SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                    END
+                    # Check if Shipment start should be adjusted
+                    IF    '${item}[5]' != '${EMPTY}'
+                        Set new shipping date any    start    ${item}[5]
+                    END
+                    # Check if Shipment end should be adjusted
+                    IF    '${item}[6]' != '${EMPTY}'
+                        Set new shipping date any    end    ${item}[6]
+                    END
+                                # Comment
+                    SeleniumLibrary.Set Focus To Element    ${inptComment}
+                    SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
+                    # Click Save button to confirm change
+                    SeleniumLibrary.Element Should Be Enabled    ${btnSave}
+                    SeleniumLibrary.Click Element    ${btnSave}
+                    SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
+                    SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                END
+                # Click ปรับข้อมูล of 1st supplier
+                SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier1}    30s
+                SeleniumLibrary.Set Focus To Element    ${btnAdjustDataSupplier1}
+                SeleniumLibrary.Click Element    ${btnAdjustDataSupplier1}
+                SeleniumLibrary.Wait Until Element Is Visible    ${txtAnyAdjustPrice}
+                # Check if ปริมาณ should be adjusted
+                IF    '${item}[3]' != '${EMPTY}'
+                    # Adjust ปริมาณ
+                    SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
+                    SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                    SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                END
+                # Check if ราคา should be adjusted
+                IF    '${item}[4]' != '${EMPTY}'
+                    # Adjust ปริมาณ
+                    SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+                    SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
+                    SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                END
+                # Check if Shipment start should be adjusted
+                IF    '${item}[5]' != '${EMPTY}'
+                    Set new shipping date any    start    ${item}[5]
+                END
+                # Check if Shipment end should be adjusted
+                IF    '${item}[6]' != '${EMPTY}'
+                    Set new shipping date any    end    ${item}[6]
+                END
+                            # Comment
+                SeleniumLibrary.Set Focus To Element    ${inptComment}
+                SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
+                # Click Save button to confirm change
+                SeleniumLibrary.Element Should Be Enabled    ${btnSave}
+                SeleniumLibrary.Click Element    ${btnSave}
+                SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
+                SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+            END
+        END    
 
-        # Click ปรับข้อมูล of 1st supplier
-        Wait Until Element Is Visible    ${btnAdjustDataSupplier1}    30s
-        Set Focus To Element    ${btnAdjustDataSupplier1}
-        Click Element    ${btnAdjustDataSupplier1}
-
-        # Adjust data in the ปรับข้อมูล
-        Wait Until Element Is Visible    ${txtAnyAdjustPrice}
-        Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-        Set Focus To Element    ${inptAnyNewPriceHigh}
-        Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${newPrice}
-        # Comment
-        Set Focus To Element    ${inptComment}
-        Input Text    ${inptComment}    Inputted by robot ${username}
-        # Click Save button to confirm change
-        Element Should Be Enabled    ${btnSave}
-        Click Element    ${btnSave}
-        Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-        Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
-        
         # Click ส่งความเห็น
         Wait Until Element Is Enabled    ${btnAnySubmit}
         Set Focus To Element    ${btnAnySubmit}
@@ -211,10 +348,13 @@ Go to tickets and submit comment - Any
         Wait Until Element Is Not Visible    ${loading}    30s
         Wait Until Element Is Visible    ${txtCommentSuccess}    30s
         Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+        # Wait for reloading page
+        Wait Until Element Is Visible    ${loading}    30s
+        Wait Until Element Is Not Visible    ${loading}    30s
+    ELSE IF    '${item}[7]' == '${True}'
+        Reject ticket    ${env}    ${requestID}    ${item}[0]
     END
-    # Wait for reloading page
-    Wait Until Element Is Visible    ${loading}    30s
-    Wait Until Element Is Not Visible    ${loading}    30s
+
 
 Create Request Ticket and approve tickets 
     [Arguments]    ${RequestType}    ${ContractType}   ${isApproval}
@@ -223,7 +363,7 @@ Create Request Ticket and approve tickets
     Go to Request Ticket menu
     # Create new request ticket and get id
     ${requestID}=     Create new request ticket    ${env}    ${productShortName}    ${RequestType}    ${ContractType}    ${dataDestination}    ${dataOrigin}    ${dataSeaFreight}
-    #${requestID}=    Set Variable    4241
+    #${requestID}=    Set Variable    4304
     # Assign index for users list
     ${index}=    Set Variable    0
     IF    '${isApproval}' == '${True}'
@@ -237,7 +377,7 @@ Create Request Ticket and approve tickets
             Logout and then login    ${dataSet}[0]   ${dataSet}[1]
             # Approve with expected user, ${dataSet}[0] = approver account
             Run Keyword If    '${RequestType}' == 'Total'   Go to tickets and submit comment - Total    ${env}    ${requestID}    ${dataSet}    ${dataSet}[0]
-            # Run Keyword If    '${RequestType}' == 'Any'   Go to tickets and submit comment - Any    ${env}    ${requestID}    ${item}    ${liUsername}[${index}]
+            Run Keyword If    '${RequestType}' == 'Any'   Go to tickets and submit comment - Any    ${env}    ${requestID}    ${dataSet}    ${dataSet}[0]
             Log To Console    Approved successfully.   
             ${index}=    Evaluate    ${index} + 1
         END
@@ -245,7 +385,7 @@ Create Request Ticket and approve tickets
 
 *** Test Cases ***      Request Type        Contract Type          Is Approval
 # --------- Use these cases to prepare the test data ---------
-Data preparation Flat 1        Total         Flat                  ${False}
-Data preparation Basis 1        Total         Basis                  ${False}
+Data preparation Flat 1        Any         Flat                  ${True}
+Data preparation Basis 1        Any         Basis                  ${False}
 Data preparation Flat 2        Total         Flat                  ${TRUE}
 Data preparation Basis 2        Total         Basis                  ${TRUE}
