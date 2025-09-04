@@ -4,7 +4,7 @@ Library    Collections
 Resource    ../keyword/globalKeyword.robot
 Resource    ../keyword/keywordRequestTicket.robot
 Resource    ../keyword/keywordApproveTicket.robot
-Test Setup    Open Samantra and login    ${env}    ${chrome}    Manao_peepo    Manao100%
+Test Setup    Open Samantra and login    ${env}    ${chrome}    ${EMPTY}    ${EMPTY}
 Test Template    Create Request Ticket and approve tickets
 Test Teardown    Close All Browsers
 
