@@ -51,7 +51,7 @@ Reject ticket
     Wait Until Element Is Visible    ${loading}    30s
     Wait Until Element Is Not Visible    ${loading}    30s
 
-Set new shipping date
+Set new shipping date total
     [Arguments]    ${shipment}    ${data}
     # Assign date based on today + increment
     ${now}=    DateTime.Get Current Date
@@ -133,3 +133,34 @@ Set new shipping date
         END
     END
     
+
+Set new shipping date any
+    [Arguments]    ${shipment}    ${data}
+    # Assign date based on today + increment
+    ${now}=    DateTime.Get Current Date
+    ${year}=    DateTime.Convert Date    ${now}    result_format=%Y
+    ${month}=    DateTime.Convert Date    ${now}    result_format=%m
+    ${formattedMonth}=    DateTime.Convert Date    ${now}    result_format=%B
+    ${dateInputted}=        BuiltIn.Set Variable    ${data}
+    ${expectedDate}=        Replace String Using Regexp    ${dateInputted}    ^0    ${EMPTY}
+    ${dateToConverted}=    Convert Date    ${year}-${month}-${data}
+    ${dayOfWeek}=    DateTime.Convert Date    ${dateToConverted}    result_format=%A
+    # Set date as full format
+    ${fulldate}=    BuiltIn.Set Variable    ${dayOfWeek}, ${formattedMonth} ${expectedDate}, ${year}
+    # Set datepicker variables
+    ${dataShipping}=    BuiltIn.Set Variable       xpath: //ngb-datepicker-month//div[@aria-label='${fulldate}']/div[text()=' ${expectedDate} ']
+    Log To Console    Full date: ${fulldate}
+    Log To Console    Expected data: ${expectedDate}
+
+    IF    '${shipment}' == 'start'
+        SeleniumLibrary.Set Focus To Element    ${dpkAnyShipmentStart}
+        SeleniumLibrary.Click Element    ${dpkAnyShipmentStart}
+        SeleniumLibrary.Wait Until Element Is Visible    ${dataShipping}
+        SeleniumLibrary.Click Element    ${dataShipping}
+    END
+    IF    '${shipment}' == 'end'
+        SeleniumLibrary.Set Focus To Element    ${dpkAnyShipmentEnd}
+        SeleniumLibrary.Click Element    ${dpkAnyShipmentEnd}
+        SeleniumLibrary.Wait Until Element Is Visible    ${dataShipping}
+        SeleniumLibrary.Click Element    ${dataShipping}
+    END

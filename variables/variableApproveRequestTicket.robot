@@ -3,19 +3,26 @@ ${urlApproveDev}    https://samantra-dev.fitcp.com/globaltrade/details-ticket/
 ${urlApproveSTG}    https://samantra-staging.fitcp.com/globaltrade/details-ticket/
 ${h2TicketApproval}    xpath: //h2[contains(text(),'รายละเอียดขออนุมัติจัดซื้อ')]
 
+# ----- Universal -----
+${chkSupplier1}    xpath: //supplier-list/div/div[1]//mat-checkbox
+${chkSupplier2}    xpath: //supplier-list/div/div[2]//mat-checkbox
+${chkSupplier3}    xpath: //supplier-list/div/div[3]//mat-checkbox
+${chkSupplier4}    xpath: //supplier-list/div/div[4]//mat-checkbox
+
 # ----- Total -----
 ${btnAdjustData}    xpath: //button[contains(text(),'ปรับข้อมูล')]
-${chkTotalSupplier1}    xpath: //supplier-list/div/div[1]//mat-checkbox
-${chkTotalSupplier2}    xpath: //supplier-list/div/div[2]//mat-checkbox
-${chkTotalSupplier3}    xpath: //supplier-list/div/div[3]//mat-checkbox
-${chkTotalSupplier4}    xpath: //supplier-list/div/div[4]//mat-checkbox
+
 
 # ----- Any -----
-# Supplier table
-${chkAnySupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none'][1]//mat-checkbox
 ${btnAdjustDataSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][1]//button[contains(text(),'ปรับข้อมูล')]
+${btnAdjustDataSupplier2}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][2]//button[contains(text(),'ปรับข้อมูล')]
+${btnAdjustDataSupplier3}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][3]//button[contains(text(),'ปรับข้อมูล')]
+${btnAdjustDataSupplier4}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][4]//button[contains(text(),'ปรับข้อมูล')]
 ${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
+${inptAnyPurchase}    xpath: //input[@formcontrolname='quantityNew']
 ${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
+${dpkAnyShipmentStart}    xpath: //app-date-picker[@id='shipmentStartDateNew']
+${dpkAnyShipmentEnd}    xpath: //app-date-picker[@id='shipmentEndDateNew']
 ${btnAnySubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
 
 # Modal Adjust data
