@@ -16,12 +16,12 @@ ${dataOrigin}    BRA
 ${dataSeaFreight}    Conventional Vessel
 
 # Data Set for approver, please following these sample
-# assigned list        Username                     Password    Deselect Supplier    Purchase    Price     Shipment start    Shipment end        isReject                isDataChange
+# assigned list        Username                     Password    Deselect Supplier    Purchase    Price     Shipment start         Shipment end        isReject           isDataChange
 #                                                               (1-3)                (Numeric)   (Numeric)   (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
-@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    1                    3000        3000.25        15                25                 ${False}            ${True}
-@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    2                    2000        1750.75        02              ${EMPTY}              ${False}           ${True}
-@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    3                    1000        2578.32        15                25                 ${False}            ${True}
-@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    ${EMPTY}             2000        1750        ${EMPTY}          18                ${False}                ${True}
+@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    2                    2000        800.75        ${EMPTY}              ${EMPTY}           ${False}            ${True}
+@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    2                    2000        800.75        ${EMPTY}              ${EMPTY}           ${False}           ${True}
+@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    1                    2000        900.32        ${EMPTY}              ${EMPTY}           ${False}            ${True}
+@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    1                    2000        900.32        ${EMPTY}              ${EMPTY}           ${False}                ${True}
 @{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    ${EMPTY}             2000        3813.24        15                25                 ${False}            ${True}
 @{dataApprovalSetCEO}  manaoAutomate_ceo            Qa123456    ${EMPTY}            ${EMPTY}     ${EMPTY}     ${EMPTY}      ${EMPTY}               ${False}              ${False}
 
@@ -128,48 +128,90 @@ Go to tickets and submit comment - Total
         Reject ticket    ${env}    ${requestID}    ${username}
     END
 
-
 Go to tickets and submit comment - Any
-    [Arguments]    ${env}    ${requestID}    ${newPrice}    ${username}
+    [Arguments]    ${env}    ${requestID}    ${item}    ${username}
     # Go to specified ticket
     Go to Approval on that request ticket    ${env}    ${requestID}
     Wait Until Element Is Visible    ${loading}    30s
     Wait Until Element Is Not Visible    ${loading}    30s
-    # Select 1st checkbox
-    Wait Until Element Is Visible    ${chkAnySupplier1}    30s
-    Click Element    ${chkAnySupplier1}
-    # Click ปรับข้อมูล
-    Wait Until Element Is Visible    ${btnAdjustDataSupplier1}    30s
-    Set Focus To Element    ${btnAdjustDataSupplier1}
-    Click Element    ${btnAdjustDataSupplier1}
+    # Check if the ticket should be adjusted
+    IF    '${item}[7]' == '${False}'
+        # Check if the suppliers is going to be deselected
+        SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}
+        # If 1 supplier is selected
+        IF    '${item}[2]' == '1'  
+            # Select 1st checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+        # If 2 suppliers are selected
+        ELSE IF    '${item}[2]' == '2'
+            # Select 1st checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            # Select 2nd checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier2}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier2}
+        # If 3 suppliers are selected
+        ELSE IF    '${item}[2]' == '3'
+            # Select 1st checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            # Select 2nd checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier2}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier2}
+            # Select 3rd checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier3}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier3}
+        # If 4 suppliers are selected
+        ELSE IF    '${item}[2]' == '4'
+            # Select 1st checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier1}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier1}
+            # Select 2nd checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier2}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier2}
+            # Select 3rd checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier3}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier3}
+            # Select 4th checkbox
+            SeleniumLibrary.Wait Until Element Is Visible    ${chkAnySupplier4}    30s
+            SeleniumLibrary.Click Element    ${chkAnySupplier4}
+        ELSE
+            Log To Console    No changed to suppliers or the value is incorrectly inputted (please input 1-4)
+        END
 
-    # Adjust data in the ปรับข้อมูล
-    Wait Until Element Is Visible    ${txtAnyAdjustPrice}
-    Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-    Set Focus To Element    ${inptAnyNewPriceHigh}
-    Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${newPrice}
-    # Comment
-    Set Focus To Element    ${inptComment}
-    Input Text    ${inptComment}    Inputted by robot ${username}
-    # Click Save button to confirm change
-    Element Should Be Enabled    ${btnSave}
-    Click Element    ${btnSave}
-    Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-    Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
-    
-    # Click ส่งความเห็น
-    Wait Until Element Is Enabled    ${btnAnySubmit}
-    Set Focus To Element    ${btnAnySubmit}
-    Press Keys    ${None}    ENTER
+        # Click ปรับข้อมูล of 1st supplier
+        Wait Until Element Is Visible    ${btnAdjustDataSupplier1}    30s
+        Set Focus To Element    ${btnAdjustDataSupplier1}
+        Click Element    ${btnAdjustDataSupplier1}
 
-    # Click ยืนยัน
-    Wait Until Element Is Visible    ${btnConfirm}
-    Click Element    ${btnConfirm}
+        # Adjust data in the ปรับข้อมูล
+        Wait Until Element Is Visible    ${txtAnyAdjustPrice}
+        Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
+        Set Focus To Element    ${inptAnyNewPriceHigh}
+        Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${newPrice}
+        # Comment
+        Set Focus To Element    ${inptComment}
+        Input Text    ${inptComment}    Inputted by robot ${username}
+        # Click Save button to confirm change
+        Element Should Be Enabled    ${btnSave}
+        Click Element    ${btnSave}
+        Wait Until Element Is Visible    ${txtCommentSuccess}    30s
+        Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+        
+        # Click ส่งความเห็น
+        Wait Until Element Is Enabled    ${btnAnySubmit}
+        Set Focus To Element    ${btnAnySubmit}
+        Press Keys    ${None}    ENTER
 
-    Wait Until Element Is Not Visible    ${loading}    30s
-    Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-    Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+        # Click ยืนยัน
+        Wait Until Element Is Visible    ${btnConfirm}
+        Click Element    ${btnConfirm}
 
+        Wait Until Element Is Not Visible    ${loading}    30s
+        Wait Until Element Is Visible    ${txtCommentSuccess}    30s
+        Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+    END
     # Wait for reloading page
     Wait Until Element Is Visible    ${loading}    30s
     Wait Until Element Is Not Visible    ${loading}    30s
@@ -186,7 +228,7 @@ Create Request Ticket and approve tickets
     ${index}=    Set Variable    0
     IF    '${isApproval}' == '${True}'
     # Add all data set into one matrix
-    ${dataMatrix}=    Create List    ${dataApprovalSet1}    ${dataApprovalSet2}    ${dataApprovalSet3}    ${dataApprovalSet4}    ${dataApprovalSet5}    ${dataApprovalSetCEO}
+    ${dataMatrix}=    Create List    ${dataApprovalSet1}    ${dataApprovalSet2}    ${dataApprovalSet3}    ${dataApprovalSet4}
         FOR    ${dataSet}    IN    @{dataMatrix}
             # Log To Console    Data Matrix: ${dataMatrix}
             # Log To Console    Data Set: ${dataSet}
