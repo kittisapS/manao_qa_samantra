@@ -10,7 +10,7 @@ Test Teardown    Close All Browsers
 
 *** Variables ***
 ${productShortName}    SBM
-${env}    DEV
+${env}    STG
 ${dataDestination}    Thailand
 ${dataOrigin}    BRA
 ${dataSeaFreight}    Conventional Vessel
@@ -201,6 +201,8 @@ Go to tickets and submit comment - Any
                                 SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                                 SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
                                 SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                                # Click to out-of-focus
+                                SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
                             END
                             # Check if ราคา should be adjusted
                             IF    '${item}[4]' != '${EMPTY}'
@@ -208,6 +210,8 @@ Go to tickets and submit comment - Any
                                 SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
                                 SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
                                 SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                                # Click to out-of-focus
+                                SeleniumLibrary.Click Element    ${inptAnyPurchase}
                             END
                             # Check if Shipment start should be adjusted
                             IF    '${item}[5]' != '${EMPTY}'
@@ -217,7 +221,7 @@ Go to tickets and submit comment - Any
                             IF    '${item}[6]' != '${EMPTY}'
                                 Set new shipping date any    end    ${item}[6]
                             END
-                                        # Comment
+                            # Comment
                             SeleniumLibrary.Set Focus To Element    ${inptComment}
                             SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
                             # Click Save button to confirm change
@@ -237,6 +241,8 @@ Go to tickets and submit comment - Any
                             SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                             SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
                             SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                            # Click to out-of-focus
+                            SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
                         END
                         # Check if ราคา should be adjusted
                         IF    '${item}[4]' != '${EMPTY}'
@@ -244,6 +250,8 @@ Go to tickets and submit comment - Any
                             SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
                             SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
                             SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                            # Click to out-of-focus
+                            SeleniumLibrary.Click Element    ${inptAnyPurchase}
                         END
                         # Check if Shipment start should be adjusted
                         IF    '${item}[5]' != '${EMPTY}'
@@ -273,6 +281,8 @@ Go to tickets and submit comment - Any
                         SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                         SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
                         SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                        # Click to out-of-focus
+                        SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
                     END
                     # Check if ราคา should be adjusted
                     IF    '${item}[4]' != '${EMPTY}'
@@ -280,6 +290,8 @@ Go to tickets and submit comment - Any
                         SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
                         SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
                         SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                        # Click to out-of-focus
+                        SeleniumLibrary.Click Element    ${inptAnyPurchase}
                     END
                     # Check if Shipment start should be adjusted
                     IF    '${item}[5]' != '${EMPTY}'
@@ -289,7 +301,7 @@ Go to tickets and submit comment - Any
                     IF    '${item}[6]' != '${EMPTY}'
                         Set new shipping date any    end    ${item}[6]
                     END
-                                # Comment
+                    # Comment
                     SeleniumLibrary.Set Focus To Element    ${inptComment}
                     SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
                     # Click Save button to confirm change
@@ -309,6 +321,8 @@ Go to tickets and submit comment - Any
                     SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                     SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
                     SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                    # Click to out-of-focus
+                    SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
                 END
                 # Check if ราคา should be adjusted
                 IF    '${item}[4]' != '${EMPTY}'
@@ -316,6 +330,8 @@ Go to tickets and submit comment - Any
                     SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
                     SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
                     SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                    # Click to out-of-focus
+                    SeleniumLibrary.Click Element    ${inptAnyPurchase}
                 END
                 # Check if Shipment start should be adjusted
                 IF    '${item}[5]' != '${EMPTY}'
