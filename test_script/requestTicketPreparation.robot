@@ -200,6 +200,8 @@ Go to tickets and submit comment - Any
                                 # Adjust ปริมาณ
                                 SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                                 SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                                SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                                Sleep    0.25s
                                 SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
                                 # Click to out-of-focus
                                 SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
@@ -240,6 +242,8 @@ Go to tickets and submit comment - Any
                             # Adjust ปริมาณ
                             SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                             SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                            SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                            Sleep    0.25s
                             SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
                             # Click to out-of-focus
                             SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
@@ -280,6 +284,8 @@ Go to tickets and submit comment - Any
                         # Adjust ปริมาณ
                         SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                         SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                        SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                        Sleep    0.25s
                         SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
                         # Click to out-of-focus
                         SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
@@ -320,6 +326,8 @@ Go to tickets and submit comment - Any
                     # Adjust ปริมาณ
                     SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
                     SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
+                    SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                    Sleep    0.25s
                     SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
                     # Click to out-of-focus
                     SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
