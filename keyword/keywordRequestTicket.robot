@@ -135,7 +135,7 @@ Create new request ticket
     Select value from    ${ddlOrigin}    ${dataOrigin}
     # Select Product Origin (Total)
     ${dataProductOrigin}    Set Variable    xpath: //div[@role='option'][1]
-    Run Keyword If    '${requestType}' == 'Total'    Select value from    ${ddlProductOrigin}    ${dataProductOrigin}
+    Select value from    ${ddlProductOrigin}    ${dataProductOrigin}
     # Select Port
     ${dataPort}    Set Variable       xpath: //div[@role='option' and text()=' ANY ']
     Select value from    ${ddlEndpoint}    ${dataPort}
@@ -144,7 +144,7 @@ Create new request ticket
     Select value from    ${ddlSeaFrieght}    ${dataSeaFreight}
     # Select Package (Total)
     ${dataPackage}    Set Variable    xpath: //div[@role='option'][1]
-    Run Keyword If    '${requestType}' == 'Total'    Select value from    ${ddlPackage}    ${dataPackage}
+    Select value from    ${ddlPackage}    ${dataPackage}
 
     # Shipping start - end
     Set Shipping date
@@ -171,6 +171,7 @@ Create new request ticket
     Run Keyword If    '${contractType}' == 'Flat'    Select value from    ${ddlCalProtein}    xpath: //span[text()='Total']//ancestor::div[@role='option']
  
     # Save supplier
+    SeleniumLibrary.Element Should Be Enabled    ${btnSave}
     SeleniumLibrary.Click Element    ${btnSave}
 
     # ----- Create 2nd supplier -----

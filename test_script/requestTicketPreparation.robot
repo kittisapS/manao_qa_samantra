@@ -18,12 +18,13 @@ ${dataSeaFreight}    Conventional Vessel
 # Data Set for approver, please following these sample
 # assigned list        Username                     Password    Select Supplier    Purchase      Price        Shipment start        Shipment end        isReject          isDataChange
 #                                                               (1-4)             (Numeric)     (Numeric)     (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
-@{dataApprovalSet1}    manaoAutomate_executive01    Qa123456    4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet2}    manaoAutomate_executive02    Qa123456    4                    1000        800.75        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet3}    manaoAutomate_executive03    Qa123456    4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet4}    manaoAutomate_executive04    Qa123456    4                    3000        900.32        ${EMPTY}              ${EMPTY}           ${False}         ${True}
-@{dataApprovalSet5}    manaoAutomate_executive05    Qa123456    4                    2000        3813.24        15                25                 ${True}            ${False}
-@{dataApprovalSetCEO}  manaoAutomate_ceo            Qa123456    ${EMPTY}            ${EMPTY}     ${EMPTY}     ${EMPTY}      ${EMPTY}               ${False}              ${False}
+#                                                                                                                                   must be inputted if shipment start is changed 
+@{dataApprovalSet1}    manaoAutomate_executive11    Qa123456    3                  1000        ${EMPTY}        ${EMPTY}         ${EMPTY}          ${False}         ${True}
+@{dataApprovalSet2}    manaoAutomate_executive12    Qa123456    3                  1000        ${EMPTY}        ${EMPTY}         ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet3}    manaoAutomate_executive13    Qa123456    1                  1000        ${EMPTY}        ${EMPTY}         ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet4}    manaoAutomate_executive14    Qa123456    1                  1000       ${EMPTY}         ${EMPTY}         ${EMPTY}           ${False}         ${True}
+@{dataApprovalSet5}    manaoAutomate_executive15    Qa123456    1                  1000       ${EMPTY}         ${EMPTY}         ${EMPTY}           ${False}         ${True}
+@{dataApprovalSetCEO}  manaoAutomate_ceo03          Qa123456    3                  1000       ${EMPTY}         ${EMPTY}         ${EMPTY}           ${False}         ${True}
 
 *** Keywords ***
 Go to tickets and submit comment - Total
