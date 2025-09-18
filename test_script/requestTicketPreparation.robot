@@ -10,7 +10,7 @@ Test Teardown    Close All Browsers
 
 *** Variables ***
 ${productShortName}    SBM
-${env}    STG
+${env}    DEV
 ${dataDestination}    Thailand
 ${dataOrigin}    BRA
 ${dataSeaFreight}    Conventional Vessel
@@ -19,7 +19,7 @@ ${dataSeaFreight}    Conventional Vessel
 # assigned list        Username                     Password    Select Supplier    Purchase      Price        Shipment start        Shipment end        isReject          isDataChange
 #                                                               (1-4)             (Numeric)     (Numeric)     (Should be 02-30)     (Cannot be 30)      (True/False)      (True/False)
 #                                                                                                                                   must be inputted if shipment start is changed 
-@{dataApprovalSet1}    manaoAutomate_executive11    Qa123456    3                  1000        ${EMPTY}        ${EMPTY}         ${EMPTY}          ${False}         ${True}
+@{dataApprovalSet1}    manaoAutomate_executive11    Qa123456    3                  1000        2000        02         30          ${False}         ${True}
 @{dataApprovalSet2}    manaoAutomate_executive12    Qa123456    3                  1000        ${EMPTY}        ${EMPTY}         ${EMPTY}           ${False}         ${True}
 @{dataApprovalSet3}    manaoAutomate_executive13    Qa123456    1                  1000        ${EMPTY}        ${EMPTY}         ${EMPTY}           ${False}         ${True}
 @{dataApprovalSet4}    manaoAutomate_executive14    Qa123456    1                  1000       ${EMPTY}         ${EMPTY}         ${EMPTY}           ${False}         ${True}
@@ -199,22 +199,22 @@ Go to tickets and submit comment - Any
                             # Check if ปริมาณ should be adjusted
                             IF    '${item}[3]' != '${EMPTY}'
                                 # Adjust ปริมาณ
-                                SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
-                                SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
-                                SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                                SeleniumLibrary.Wait Until Element Is Visible    ${inptNewAnyPurchase}
+                                SeleniumLibrary.Set Focus To Element    ${inptNewAnyPurchase}
+                                SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    DELETE
                                 Sleep    0.25s
-                                SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                                SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    ${item}[3]
                                 # Click to out-of-focus
-                                SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
+                                SeleniumLibrary.Click Element    ${inptNewPrice}
                             END
                             # Check if ราคา should be adjusted
                             IF    '${item}[4]' != '${EMPTY}'
                                 # Adjust ปริมาณ
-                                SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-                                SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
-                                SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                                SeleniumLibrary.Wait Until Element Is Visible    ${inptNewPrice}
+                                SeleniumLibrary.Set Focus To Element    ${inptNewPrice}
+                                SeleniumLibrary.Press Keys    ${inptNewPrice}    ${CTRLA}    ${item}[4]
                                 # Click to out-of-focus
-                                SeleniumLibrary.Click Element    ${inptAnyPurchase}
+                                SeleniumLibrary.Click Element    ${inptNewAnyPurchase}
                             END
                             # Check if Shipment start should be adjusted
                             IF    '${item}[5]' != '${EMPTY}'
@@ -230,8 +230,8 @@ Go to tickets and submit comment - Any
                             # Click Save button to confirm change
                             SeleniumLibrary.Element Should Be Enabled    ${btnSave}
                             SeleniumLibrary.Click Element    ${btnSave}
-                            SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-                            SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                            SeleniumLibrary.Wait Until Element Is Visible    ${txtEditedSuccess}    30s
+                            SeleniumLibrary.Wait Until Element Is Not Visible    ${txtEditedSuccess}    30s
                         END
                         # Click ปรับข้อมูล of 3rd supplier
                         SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier3}    30s
@@ -241,22 +241,22 @@ Go to tickets and submit comment - Any
                         # Check if ปริมาณ should be adjusted
                         IF    '${item}[3]' != '${EMPTY}'
                             # Adjust ปริมาณ
-                            SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
-                            SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
-                            SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                            SeleniumLibrary.Wait Until Element Is Visible    ${inptNewAnyPurchase}
+                            SeleniumLibrary.Set Focus To Element    ${inptNewAnyPurchase}
+                            SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    DELETE
                             Sleep    0.25s
-                            SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                            SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    ${item}[3]
                             # Click to out-of-focus
-                            SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
+                            SeleniumLibrary.Click Element    ${inptNewPrice}
                         END
                         # Check if ราคา should be adjusted
                         IF    '${item}[4]' != '${EMPTY}'
                             # Adjust ปริมาณ
-                            SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-                            SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
-                            SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                            SeleniumLibrary.Wait Until Element Is Visible    ${inptNewPrice}
+                            SeleniumLibrary.Set Focus To Element    ${inptNewPrice}
+                            SeleniumLibrary.Press Keys    ${inptNewPrice}    ${CTRLA}    ${item}[4]
                             # Click to out-of-focus
-                            SeleniumLibrary.Click Element    ${inptAnyPurchase}
+                            SeleniumLibrary.Click Element    ${inptNewAnyPurchase}
                         END
                         # Check if Shipment start should be adjusted
                         IF    '${item}[5]' != '${EMPTY}'
@@ -272,8 +272,8 @@ Go to tickets and submit comment - Any
                         # Click Save button to confirm change
                         SeleniumLibrary.Element Should Be Enabled    ${btnSave}
                         SeleniumLibrary.Click Element    ${btnSave}
-                        SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-                        SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                        SeleniumLibrary.Wait Until Element Is Visible    ${txtEditedSuccess}    30s
+                        SeleniumLibrary.Wait Until Element Is Not Visible    ${txtEditedSuccess}    30s
                     END
                     # Click ปรับข้อมูล of 3rd supplier
                     SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier2}    30s
@@ -283,22 +283,22 @@ Go to tickets and submit comment - Any
                     # Check if ปริมาณ should be adjusted
                     IF    '${item}[3]' != '${EMPTY}'
                         # Adjust ปริมาณ
-                        SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
-                        SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
-                        SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                        SeleniumLibrary.Wait Until Element Is Visible    ${inptNewAnyPurchase}
+                        SeleniumLibrary.Set Focus To Element    ${inptNewAnyPurchase}
+                        SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    DELETE
                         Sleep    0.25s
-                        SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                        SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    ${item}[3]
                         # Click to out-of-focus
-                        SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
+                        SeleniumLibrary.Click Element    ${inptNewPrice}
                     END
                     # Check if ราคา should be adjusted
                     IF    '${item}[4]' != '${EMPTY}'
                         # Adjust ปริมาณ
-                        SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-                        SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
-                        SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                        SeleniumLibrary.Wait Until Element Is Visible    ${inptNewPrice}
+                        SeleniumLibrary.Set Focus To Element    ${inptNewPrice}
+                        SeleniumLibrary.Press Keys    ${inptNewPrice}    ${CTRLA}    ${item}[4]
                         # Click to out-of-focus
-                        SeleniumLibrary.Click Element    ${inptAnyPurchase}
+                        SeleniumLibrary.Click Element    ${inptNewAnyPurchase}
                     END
                     # Check if Shipment start should be adjusted
                     IF    '${item}[5]' != '${EMPTY}'
@@ -314,8 +314,8 @@ Go to tickets and submit comment - Any
                     # Click Save button to confirm change
                     SeleniumLibrary.Element Should Be Enabled    ${btnSave}
                     SeleniumLibrary.Click Element    ${btnSave}
-                    SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-                    SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                    SeleniumLibrary.Wait Until Element Is Visible    ${txtEditedSuccess}    30s
+                    SeleniumLibrary.Wait Until Element Is Not Visible    ${txtEditedSuccess}    30s
                 END
                 # Click ปรับข้อมูล of 1st supplier
                 SeleniumLibrary.Wait Until Element Is Visible    ${btnAdjustDataSupplier1}    30s
@@ -325,22 +325,22 @@ Go to tickets and submit comment - Any
                 # Check if ปริมาณ should be adjusted
                 IF    '${item}[3]' != '${EMPTY}'
                     # Adjust ปริมาณ
-                    SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyPurchase}
-                    SeleniumLibrary.Set Focus To Element    ${inptAnyPurchase}
-                    SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    DELETE
+                    SeleniumLibrary.Wait Until Element Is Visible    ${inptNewAnyPurchase}
+                    SeleniumLibrary.Set Focus To Element    ${inptNewAnyPurchase}
+                    SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    DELETE
                     Sleep    0.25s
-                    SeleniumLibrary.Press Keys    ${inptAnyPurchase}    ${CTRLA}    ${item}[3]
+                    SeleniumLibrary.Press Keys    ${inptNewAnyPurchase}    ${CTRLA}    ${item}[3]
                     # Click to out-of-focus
-                    SeleniumLibrary.Click Element    ${inptAnyNewPriceHigh}
+                    SeleniumLibrary.Click Element    ${inptNewPrice}
                 END
                 # Check if ราคา should be adjusted
                 IF    '${item}[4]' != '${EMPTY}'
                     # Adjust ปริมาณ
-                    SeleniumLibrary.Wait Until Element Is Visible    ${inptAnyNewPriceHigh}
-                    SeleniumLibrary.Set Focus To Element    ${inptAnyNewPriceHigh}
-                    SeleniumLibrary.Press Keys    ${inptAnyNewPriceHigh}    ${CTRLA}    ${item}[4]
+                    SeleniumLibrary.Wait Until Element Is Visible    ${inptNewPrice}
+                    SeleniumLibrary.Set Focus To Element    ${inptNewPrice}
+                    SeleniumLibrary.Press Keys    ${inptNewPrice}    ${CTRLA}    ${item}[4]
                     # Click to out-of-focus
-                    SeleniumLibrary.Click Element    ${inptAnyPurchase}
+                    SeleniumLibrary.Click Element    ${inptNewAnyPurchase}
                 END
                 # Check if Shipment start should be adjusted
                 IF    '${item}[5]' != '${EMPTY}'
@@ -354,16 +354,16 @@ Go to tickets and submit comment - Any
                 SeleniumLibrary.Set Focus To Element    ${inptComment}
                 SeleniumLibrary.Input Text    ${inptComment}    Inputted by robot ${username}
                 # Click Save button to confirm change
-                SeleniumLibrary.Element Should Be Enabled    ${btnSave}
-                SeleniumLibrary.Click Element    ${btnSave}
-                SeleniumLibrary.Wait Until Element Is Visible    ${txtCommentSuccess}    30s
-                SeleniumLibrary.Wait Until Element Is Not Visible    ${txtCommentSuccess}    30s
+                SeleniumLibrary.Element Should Be Enabled    ${btnNewAnySave}
+                SeleniumLibrary.Click Element    ${btnNewAnySave}
+                SeleniumLibrary.Wait Until Element Is Visible    ${txtEditedSuccess}    30s
+                SeleniumLibrary.Wait Until Element Is Not Visible    ${txtEditedSuccess}    30s
             END
         END    
 
         # Click ส่งความเห็น
-        Wait Until Element Is Enabled    ${btnAnySubmit}
-        Set Focus To Element    ${btnAnySubmit}
+        Wait Until Element Is Enabled    ${btnNewAnySubmit}
+        Set Focus To Element    ${btnNewAnySubmit}
         Press Keys    ${None}    ENTER
 
         # Click ยืนยัน
@@ -387,8 +387,8 @@ Create Request Ticket and approve tickets
     Sleep    1s
     Go to Request Ticket menu
     # Create new request ticket and get id
-    ${requestID}=     Create new request ticket    ${env}    ${productShortName}    ${RequestType}    ${ContractType}    ${dataDestination}    ${dataOrigin}    ${dataSeaFreight}
-    #${requestID}=    Set Variable    4304
+    #${requestID}=     Create new request ticket    ${env}    ${productShortName}    ${RequestType}    ${ContractType}    ${dataDestination}    ${dataOrigin}    ${dataSeaFreight}
+    ${requestID}=    Set Variable    4646
     # Assign index for users list
     ${index}=    Set Variable    0
     IF    '${isApproval}' == '${True}'

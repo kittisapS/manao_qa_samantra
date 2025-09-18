@@ -153,14 +153,14 @@ Set new shipping date any
     Log To Console    Expected data: ${expectedDate}
 
     IF    '${shipment}' == 'start'
-        SeleniumLibrary.Set Focus To Element    ${dpkAnyShipmentStart}
-        SeleniumLibrary.Click Element    ${dpkAnyShipmentStart}
+        SeleniumLibrary.Set Focus To Element    ${dateNewAnyShipmentStart}
+        SeleniumLibrary.Click Element    ${dateNewAnyShipmentStart}
         SeleniumLibrary.Wait Until Element Is Visible    ${dataShipping}
         SeleniumLibrary.Click Element    ${dataShipping}
     END
     IF    '${shipment}' == 'end'
-        SeleniumLibrary.Set Focus To Element    ${dpkAnyShipmentEnd}
-        SeleniumLibrary.Click Element    ${dpkAnyShipmentEnd}
+        SeleniumLibrary.Set Focus To Element    ${dateNewAnyShipmentEnd}
+        SeleniumLibrary.Click Element    ${dateNewAnyShipmentEnd}
         SeleniumLibrary.Wait Until Element Is Visible    ${dataShipping}
         SeleniumLibrary.Click Element    ${dataShipping}
     END
