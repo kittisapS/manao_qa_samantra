@@ -11,21 +11,6 @@ ${chkSupplier4}    xpath: //supplier-list/div/div[4]//mat-checkbox
 
 # ----- Total -----
 ${btnAdjustData}    xpath: //button[contains(text(),'ปรับข้อมูล')]
-
-
-# ----- Any -----
-${btnAdjustDataSupplier1}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][1]//button[contains(text(),'ปรับข้อมูล')]
-${btnAdjustDataSupplier2}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][2]//button[contains(text(),'ปรับข้อมูล')]
-${btnAdjustDataSupplier3}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][3]//button[contains(text(),'ปรับข้อมูล')]
-${btnAdjustDataSupplier4}    xpath: //supplier-list//div[@class='comp-item-container supplier-item boder-bottom-none recommended'][4]//button[contains(text(),'ปรับข้อมูล')]
-${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
-${inptAnyPurchase}    xpath: //input[@formcontrolname='quantityNew']
-${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
-${dpkAnyShipmentStart}    xpath: //app-date-picker[@id='shipmentStartDateNew']
-${dpkAnyShipmentEnd}    xpath: //app-date-picker[@id='shipmentEndDateNew']
-${btnAnySubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
-
-# Modal Adjust data
 ${h4AdjustData}    xpath: //h4[contains(text(),'แก้ไขรายการเสนอแบบรวมปริมาณ')]
 ${inptPurchaseTarget}    xpath: //input[@formcontrolname='targetQuantity']
 ${inptAdjustPrice}    xpath: //input[@title='Number Input']
@@ -39,8 +24,29 @@ ${shipmentStart4}    xpath: //div[4]/div/div[1]/app-date-picker//input[@placehol
 ${shipmentEnd4}    xpath: //div[4]/div/div[2]/app-date-picker//input[@placeholder='DD/MM/YYYY']
 ${btnSave}    xpath: //button[contains(text(),'บันทึก')]
 
+# ----- Any -----
+${btnAdjustDataSupplier1}    xpath: //supplier-list/div/div[1]//button[contains(text(),'ปรับข้อมูล')]
+${btnAdjustDataSupplier2}    xpath: //supplier-list/div/div[2]//button[contains(text(),'ปรับข้อมูล')]
+${btnAdjustDataSupplier3}    xpath: //supplier-list/div/div[3]//button[contains(text(),'ปรับข้อมูล')]
+${btnAdjustDataSupplier4}    xpath: //supplier-list/div/div[4]//button[contains(text(),'ปรับข้อมูล')]
+${txtAnyAdjustPrice}    xpath: //label[contains(text(),'แก้ไขรายการเสนอราคา')]
+${inptNewAnyPurchase}    xpath: //app-edit-modal//input[@id='quantity-0']
+${inptNewPrice}    xpath: //label[contains(text(),' ราคา ')]//parent::div//input
+${dateNewAnyShipmentStart}    xpath: //label[contains(text(),'Shipment')]/parent::app-edit-supplier/div[1]/div[1]/app-date-picker
+${dateNewAnyShipmentEnd}    xpath: //label[contains(text(),'Shipment')]/parent::app-edit-supplier/div[1]/div[2]/app-date-picker
+${btnNewAnySave}    xpath: //app-edit-modal//button[contains(text(),'บันทึก')]
+
+# Obsoleted
+#${inptAnyPurchase}    xpath: //input[@formcontrolname='quantityNew']
+#${inptAnyNewPriceHigh}    xpath: //input[@formcontrolname='priceHighNew']
+#${dpkAnyShipmentStart}    xpath: //app-date-picker[@id='shipmentStartDateNew']
+#${dpkAnyShipmentEnd}    xpath: //app-date-picker[@id='shipmentEndDateNew']
+#${btnAnySubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
+
+# Global elements
 ${inptComment}    xpath: //textarea[@id='price-additional-info']
 ${btnSubmit}    xpath: //div[@class='form-actions']/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
+${btnNewAnySubmit}    xpath: //app-details-ticket//div[contains(@class,'form-actions')]/div[1]//button[contains(text(),'ส่งความคิดเห็น')]
 
 # Reject ticket
 ${btnRejectTicket}    xpath: //button[contains(text(),'ปฏิเสธคำขอจัดซื้อ')]
